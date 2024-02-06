@@ -31,3 +31,6 @@ class db:
         result = self.cursor.fetchall()
         self.disconnect()
         return result
+
+db = db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+#db.executeQuery('CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), age INT)')
