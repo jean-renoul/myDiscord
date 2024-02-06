@@ -35,3 +35,4 @@ class db:
 db = db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
 #db.executeQuery('CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), age INT)')
 #db.executeQuery('INSERT INTO message ( texte, auteur, heure) VALUES (%s, %s, %s)', ("Salut", "Jean", "2021-01-01 00:00:00"))
+#db.executeQuery('INSERT INTO users ( nom, prenom, email, mdp) VALUES (%s, %s, %s, %s)', ("Renoul", "Jean", "jean-renoul@laplateforme.io", "patesaup0ulet"))
