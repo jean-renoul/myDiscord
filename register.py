@@ -14,8 +14,14 @@ class Register:
         frame.place(x=0, y=0)
 
         # Titre de la page
-        heading = Label(frame, text="Register", fg="white", bg="#2c2f33", font=("Segoe UI", 20))
-        heading.place(x=400, y=10)
+        heading = Label(frame, text="Register", fg="white", bg="#2c2f33", font=("Segoe UI", 30))
+        heading.place(x=375, y=10)
+
+        # firstname
+        firstname = Label(frame, text="Firstname :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
+        firstname.place(x=300, y=100)
+        firstname_entry = Entry(frame, width=30, borderwidth=2,)
+        firstname_entry.place(x=450, y=115)
 
 if __name__ == "__main__":
     windows = Tk()  # Création de l'objet Tk
