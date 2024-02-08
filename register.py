@@ -17,11 +17,18 @@ class Register:
         heading = Label(frame, text="Register", fg="white", bg="#2c2f33", font=("Segoe UI", 30))
         heading.place(x=375, y=10)
 
-        # firstname
-        firstname = Label(frame, text="Firstname :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
+        # Prénom
+        firstname = Label(frame, text="Prénom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
         firstname.place(x=300, y=100)
         firstname_entry = Entry(frame, width=30, borderwidth=2,)
         firstname_entry.place(x=450, y=115)
+
+        # Nom
+        lastname = Label(frame, text="Nom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
+        lastname.place(x=300, y=150)
+        lastname_entry = Entry(frame, width=30, borderwidth=2)
+        lastname_entry.place(x=450, y=165)
+
 
 if __name__ == "__main__":
     windows = Tk()  # Création de l'objet Tk
