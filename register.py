@@ -41,6 +41,10 @@ class Register:
         password_entry = Entry(frame, width=30, show="*") # show="*" pour cacher le mot de passe
         password_entry.place(x=302, y=350)
 
+        # Bouton d'inscription
+        register_button = Button(frame, text="Valider l'inscription", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15))
+        register_button.place(x=300, y=400)
+
 
 if __name__ == "__main__":
     windows = Tk()  # Création de l'objet Tk
