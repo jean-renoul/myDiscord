@@ -14,26 +14,32 @@ class Register:
         frame.place(x=0, y=0)
 
         # Titre de la page
-        heading = Label(frame, text="Register", fg="white", bg="#2c2f33", font=("Segoe UI", 30))
-        heading.place(x=375, y=10)
+        heading = Label(frame, text="S'inscrire sur Discord", fg="white", bg="#2c2f33", font=("Segoe UI", 30))
+        heading.place(x=300, y=10)
 
         # Prénom
-        firstname = Label(frame, text="Prénom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
+        firstname = Label(frame, text="Prénom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
         firstname.place(x=300, y=100)
         firstname_entry = Entry(frame, width=30, borderwidth=2,)
-        firstname_entry.place(x=450, y=115)
+        firstname_entry.place(x=302, y=140)
 
         # Nom
-        lastname = Label(frame, text="Nom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
-        lastname.place(x=300, y=150)
+        lastname = Label(frame, text="Nom :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
+        lastname.place(x=300, y=170)
         lastname_entry = Entry(frame, width=30, borderwidth=2)
-        lastname_entry.place(x=450, y=165)
+        lastname_entry.place(x=302, y=210)
 
         # Email
-        email = Label(frame, text="Email :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
-        email.place(x=300, y=200)
+        email = Label(frame, text="Email :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
+        email.place(x=300, y=240)
         email_entry = Entry(frame, width=30, borderwidth=2)
-        email_entry.place(x=450, y=215)
+        email_entry.place(x=302, y=280)
+
+        # Mot de passe
+        password = Label(frame, text="Mot de passe :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
+        password.place(x=300, y=310)
+        password_entry = Entry(frame, width=30, borderwidth=2, show="*") # show="*" pour cacher le mot de passe
+        password_entry.place(x=302, y=350)
 
 
 if __name__ == "__main__":
