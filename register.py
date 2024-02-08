@@ -29,6 +29,12 @@ class Register:
         lastname_entry = Entry(frame, width=30, borderwidth=2)
         lastname_entry.place(x=450, y=165)
 
+        # Email
+        email = Label(frame, text="Email :", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 20))
+        email.place(x=300, y=200)
+        email_entry = Entry(frame, width=30, borderwidth=2)
+        email_entry.place(x=450, y=215)
+
 
 if __name__ == "__main__":
     windows = Tk()  # Création de l'objet Tk
