@@ -15,24 +15,24 @@ class Login:
 
         # Mail
         Logo_Mail = Image.open("images/logo_mail.png")
-        Logo_Mail = Logo_Mail.resize((50, 50), Image.LANCZOS)
+        Logo_Mail = Logo_Mail.resize((30, 30), Image.LANCZOS)
         self.logo_mail_image = ImageTk.PhotoImage(Logo_Mail)
         emailLabel = Label(frame, text="Email :", image=self.logo_mail_image, compound="left", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
-        emailLabel.place(x=10, y=100)
+        emailLabel.place(x=100, y=100)
 
         # Password
         Logo_Password = Image.open("images/logo_password.png")
-        Logo_Password = Logo_Password.resize((50, 50), Image.LANCZOS)
+        Logo_Password = Logo_Password.resize((30, 30), Image.LANCZOS)
         self.logo_password_image = ImageTk.PhotoImage(Logo_Password)
         passwordLabel = Label(frame, text="Password :", image=self.logo_password_image, compound="left", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
-        passwordLabel.place(x=10, y=150)
+        passwordLabel.place(x=100, y=150)
 
         # Les entrées
         email_entry = Entry(frame, width=30)
-        email_entry.place(x=150, y=100)
+        email_entry.place(x=250, y=110)
 
         password_entry = Entry(frame, width=30, show="*")
-        password_entry.place(x=150, y=150)
+        password_entry.place(x=250, y=160)
 
 if __name__ == "__main__":
     app = Login()  # Création de l'instance de la classe Login
