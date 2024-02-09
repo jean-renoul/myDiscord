@@ -43,6 +43,12 @@ class Login:
         login_button = Button(frame, text="connexion", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15))
         login_button.place(x=340, y=240)
 
+        # Bouton je n'ai pas de compte
+        donthaveaccount = Label (frame, text="Je n'ai pas de compte", fg="white", bg="#2c2f33", font=("Segoe UI", 10))
+        donthaveaccount.place(x=110, y=230)
+        donthaveaccount_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10))
+        donthaveaccount_button.place(x=130, y=260)
+
     #def submit(self):
         #if self.email_entry.get() == "":
             #messagebox.showerror("Erreur", "Veuillez entrer votre email")
