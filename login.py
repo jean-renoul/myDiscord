@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
+from tkinter import messagebox
 
 class Login:
     def __init__(self):
@@ -37,6 +38,20 @@ class Login:
 
         password_entry = Entry(frame, width=30, show="*")
         password_entry.place(x=250, y=160)
+
+        # Bouton d'inscription
+        login_button = Button(frame, text="connexion", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15))
+        login_button.place(x=340, y=240)
+
+    #def submit(self):
+        #if self.email_entry.get() == "":
+            #messagebox.showerror("Erreur", "Veuillez entrer votre email")
+            #return
+        #elif self.password_entry.get() == "":
+            #messagebox.showerror("Erreur", "Veuillez entrer votre mot de passe")
+            #return
+        #else:
+            #pass
 
 if __name__ == "__main__":
     app = Login()  # Création de l'instance de la classe Login
