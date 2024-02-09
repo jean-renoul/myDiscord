@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
+import os
 
 class Login:
     def __init__(self):
@@ -33,11 +34,11 @@ class Login:
         passwordLabel.place(x=100, y=150)
 
         # Les entrées
-        email_entry = Entry(frame, width=30)
-        email_entry.place(x=250, y=110)
+        self.email_entry = Entry(frame, width=30)
+        self.email_entry.place(x=250, y=110)
 
-        password_entry = Entry(frame, width=30, show="*")
-        password_entry.place(x=250, y=160)
+        self.password_entry = Entry(frame, width=30, show="*")
+        self.password_entry.place(x=250, y=160)
 
         # Bouton d'inscription
         login_button = Button(frame, text="connexion", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15))
@@ -46,19 +47,13 @@ class Login:
         # Bouton je n'ai pas de compte
         donthaveaccount = Label (frame, text="Je n'ai pas de compte", fg="white", bg="#2c2f33", font=("Segoe UI", 10))
         donthaveaccount.place(x=110, y=230)
-        donthaveaccount_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10))
+        donthaveaccount_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10), command=lambda: self.newone())
         donthaveaccount_button.place(x=130, y=260)
 
-    #def submit(self):
-        #if self.email_entry.get() == "":
-            #messagebox.showerror("Erreur", "Veuillez entrer votre email")
-            #return
-        #elif self.password_entry.get() == "":
-            #messagebox.showerror("Erreur", "Veuillez entrer votre mot de passe")
-            #return
-        #else:
-            #pass
+    def newone(self):
+        self.windows.destroy()
+        os.system('python register.py')
 
 if __name__ == "__main__":
-    app = Login()  # Création de l'instance de la classe Login
-    app.windows.mainloop()  # Lancement de la boucle principale
+    app = Login()
+    app.windows.mainloop()
