@@ -29,7 +29,7 @@ class Graphic:
         # Placement des boutons
         self.canvas.create_window(25, 80, anchor=tk.NW, window=self.button_textuel)
         self.canvas.create_window(25, 150, anchor=tk.NW, window=self.button_vocal)
-        self.canvas.create_window(25, 220, anchor=tk.NW, window=self.button_logout)
+        self.canvas.create_window(700, 80, anchor=tk.NW, window=self.button_logout)
 
         # Création de la zone de chat
         frame = tk.Frame(self.root)  # Define the frame variable
@@ -46,7 +46,6 @@ class Graphic:
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
 
         disconnect_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10), command=self.logout)
-        disconnect_button.place(x=130, y=260)
 
     def logout(self):
         self.root.destroy()
