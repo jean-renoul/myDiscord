@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-from Db import db  # Assurez-vous que c'est "Db" avec une majuscule
+from Db import db_instance
 
 class Register:
     def __init__(self):
-        self.db_instance = db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+        self.db_instance = db_instance
 
         self.windows = tk.Tk()
         self.windows.title("Register")
