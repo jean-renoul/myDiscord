@@ -8,15 +8,9 @@ class Graphic:
         self.root.title("Discord")
         self.root.geometry("900x540")
 
-        # Chargement de l'image de fond
-        self.image_fond = tk.PhotoImage(file="images/fond.png")
-
         # Création d'un widget Canvas pour afficher l'image de fond
-        self.canvas = tk.Canvas(self.root, width=900, height=540)
+        self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  # Changer la couleur de fond ici
         self.canvas.pack()
-
-        # Affichage de l'image de fond
-        self.canvas.create_image(0, 0, anchor=tk.NW, image=self.image_fond)
 
         # Chargement de l'autre image
         self.image_haut_milieu = tk.PhotoImage(file="images/Titre.png")
@@ -41,7 +35,7 @@ class Graphic:
         self.message_entry_window = self.canvas.create_window(450, 510, anchor=tk.CENTER, window=self.message_entry)
 
         # Création du bouton d'envoi
-        self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.send_message)
+        self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", borderwidth=0, font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
 
     def show_textual_rooms(self):
