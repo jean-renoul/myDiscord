@@ -9,15 +9,15 @@ class Graphic:
         self.root.title("Discord")
         self.root.geometry("900x540")
 
-        # Création d'un widget Canvas pour afficher l'image de fond
-        self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  # Changer la couleur de fond ici
-        self.canvas.pack()
+        # Création d'un widget Canvas avec un fond rouge
+        self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  
 
-        # Chargement de l'autre image
+        # Charger l'image Titre.png
         self.image_haut_milieu = tk.PhotoImage(file="images/Titre.png")
 
-        # Affichage de l'autre image en haut au milieu
+        # Afficher l'image au centre en haut
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
+        self.canvas.pack()  # N'oubliez pas d'emballer le canvas
 
         # Création des boutons
         self.button_textuel = Button(self.canvas, text="Salons Textuels", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.show_textual_rooms)
