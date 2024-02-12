@@ -2,10 +2,13 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
+from Db import db_instance
 import os
 
 class Login:
     def __init__(self):
+        self.db_instance = db_instance
+
         self.windows = tk.Tk()
         self.windows.title("Login")
         self.windows.geometry("600x300")
@@ -35,7 +38,7 @@ class Login:
         self.password_entry = Entry(frame, width=30, show="*")
         self.password_entry.place(x=250, y=160)
 
-        login_button = Button(frame, text="connexion", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15))
+        login_button = Button(frame, text="connexion", width=20, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.check_login)
         login_button.place(x=340, y=240)
 
         donthaveaccount = Label (frame, text="Je n'ai pas de compte", fg="white", bg="#2c2f33", font=("Segoe UI", 10))
@@ -46,6 +49,19 @@ class Login:
     def newone(self):
         self.windows.destroy()
         os.system('python Class/register.py')
+
+    def check_login(self):
+        email = self.email_entry.get()
+        password = self.password_entry.get()
+
+        # Requête pour vérifier les informations de connexion dans la base de données
+        query = "SELECT * FROM users WHERE email = %s AND mdp = %s"
+        result = self.db_instance.fetch(query, (email, password))
+
+        if result:
+            messagebox.showinfo("Succès", "Vous êtes connecté avec succès!")
+        else:
+            messagebox.showerror("Erreur", "Adresse e-mail ou mot de passe incorrect")
 
 if __name__ == "__main__":
     app = Login()
