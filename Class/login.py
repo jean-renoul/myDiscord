@@ -52,7 +52,7 @@ class Login:
 
     def newone(self):
         self.windows.destroy()
-        os.system('python register.py')
+        os.system('python Class/register.py')
 
 if __name__ == "__main__":
     app = Login()
