@@ -60,6 +60,8 @@ class Login:
 
         if result:
             messagebox.showinfo("Succès", "Vous êtes connecté avec succès!")
+            self.windows.destroy()  # Ferme la fenêtre de connexion
+            os.system('python Class/Graphic.py')  # Lance la page Graphic.py
         else:
             messagebox.showerror("Erreur", "Adresse e-mail ou mot de passe incorrect")
 
