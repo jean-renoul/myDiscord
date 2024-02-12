@@ -9,7 +9,7 @@ class Graphic:
         self.root.geometry("900x540")
 
         # Chargement de l'image de fond
-        self.image_fond = tk.PhotoImage(file="myDiscord/fond.png")
+        self.image_fond = tk.PhotoImage(file="fond.png")
 
         # Création d'un widget Canvas pour afficher l'image de fond
         self.canvas = tk.Canvas(self.root, width=900, height=540)
@@ -19,17 +19,17 @@ class Graphic:
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.image_fond)
 
         # Chargement de l'autre image
-        self.image_haut_milieu = tk.PhotoImage(file="myDiscord/Titre.png")
+        self.image_haut_milieu = tk.PhotoImage(file="Titre.png")
 
         # Affichage de l'autre image en haut au milieu
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
 
         # Création des boutons
-        self.button_textuel = Button(self.canvas, text="Salons Textuels", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.textual_clicked)
-        self.button_vocal = Button(self.canvas, text="Salons Vocaux", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.vocal_clicked)
+        self.button_textuel = Button(self.canvas, text="Salons Textuels", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.show_textual_rooms)
+        self.button_vocal = Button(self.canvas, text="Salons Vocaux", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.show_vocal_rooms)
 
-        # Placement des boutons plus en haut à gauche avec un espacement
-        self.canvas.create_window(25, 75, anchor=tk.NW, window=self.button_textuel)
+        # Placement des boutons
+        self.canvas.create_window(25, 80, anchor=tk.NW, window=self.button_textuel)
         self.canvas.create_window(25, 150, anchor=tk.NW, window=self.button_vocal)
 
         # Création de la zone de chat
@@ -43,6 +43,54 @@ class Graphic:
         # Création du bouton d'envoi
         self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
+
+    def show_textual_rooms(self):
+        # Création de la fenêtre modale pour afficher les salons textuels
+        self.textual_window = tk.Toplevel(self.root)
+        self.textual_window.title("Salons Textuels")
+        self.textual_window.geometry("300x200")
+
+        # Liste des salons textuels existants
+        textual_rooms = ["Salon 1", "Salon 2", "Salon 3"]
+
+        # Création de la liste déroulante pour les salons textuels
+        selected_room = tk.StringVar(self.textual_window)
+        selected_room.set(textual_rooms[0])  # Valeur par défaut
+
+        room_menu = OptionMenu(self.textual_window, selected_room, *textual_rooms)
+        room_menu.pack(pady=10)
+
+        # Bouton pour créer un nouveau salon
+        create_button = Button(self.textual_window, text="Créer un nouveau salon", command=self.create_new_room)
+        create_button.pack(pady=10)
+
+    def show_vocal_rooms(self):
+        # Création de la fenêtre modale pour afficher les salons vocaux
+        self.vocal_window = tk.Toplevel(self.root)
+        self.vocal_window.title("Salons Vocaux")
+        self.vocal_window.geometry("300x200")
+
+        # Liste des salons vocaux existants
+        vocal_rooms = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]
+
+        # Création de la liste déroulante pour les salons vocaux
+        selected_room = tk.StringVar(self.vocal_window)
+        selected_room.set(vocal_rooms[0])  # Valeur par défaut
+
+        room_menu = OptionMenu(self.vocal_window, selected_room, *vocal_rooms)
+        room_menu.pack(pady=10)
+
+        # Bouton pour créer un nouveau salon vocal
+        create_button = Button(self.vocal_window, text="Créer un nouveau salon vocal", command=self.create_new_vocal_room)
+        create_button.pack(pady=10)
+
+    def create_new_room(self):
+        # Fonction à exécuter lors de la création d'un nouveau salon
+        messagebox.showinfo("Nouveau salon créé", "Vous avez créé un nouveau salon !")
+
+    def create_new_vocal_room(self):
+        # Fonction à exécuter lors de la création d'un nouveau salon vocal
+        messagebox.showinfo("Nouveau salon vocal créé", "Vous avez créé un nouveau salon vocal !")
 
     def textual_clicked(self):
         messagebox.showinfo("Information", "Bouton Salon Textuel cliqué")
