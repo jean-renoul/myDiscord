@@ -9,7 +9,7 @@ class Graphic:
         self.root.geometry("900x540")
 
         # Chargement de l'image de fond
-        self.image_fond = tk.PhotoImage(file="fond.png")
+        self.image_fond = tk.PhotoImage(file="images/fond.png")
 
         # Création d'un widget Canvas pour afficher l'image de fond
         self.canvas = tk.Canvas(self.root, width=900, height=540)
@@ -19,7 +19,7 @@ class Graphic:
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.image_fond)
 
         # Chargement de l'autre image
-        self.image_haut_milieu = tk.PhotoImage(file="Titre.png")
+        self.image_haut_milieu = tk.PhotoImage(file="images/Titre.png")
 
         # Affichage de l'autre image en haut au milieu
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
