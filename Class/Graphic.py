@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+import os
 
 class Graphic:
     def __init__(self):
@@ -21,12 +22,18 @@ class Graphic:
         # Création des boutons
         self.button_textuel = Button(self.canvas, text="Salons Textuels", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.show_textual_rooms)
         self.button_vocal = Button(self.canvas, text="Salons Vocaux", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.show_vocal_rooms)
+        
+        # Création du bouton de déconnexion
+        self.button_logout = Button(self.canvas, text="Se déconnecter", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.logout)
 
         # Placement des boutons
         self.canvas.create_window(25, 80, anchor=tk.NW, window=self.button_textuel)
         self.canvas.create_window(25, 150, anchor=tk.NW, window=self.button_vocal)
+        self.canvas.create_window(25, 220, anchor=tk.NW, window=self.button_logout)
 
         # Création de la zone de chat
+        frame = tk.Frame(self.root)  # Define the frame variable
+
         self.chat_text = Text(self.canvas, bg="grey", fg="black", font=("Segoe UI", 12), bd=0, width=50, height=18)
         self.chat_text_window = self.canvas.create_window(450, 270, anchor=tk.CENTER, window=self.chat_text)
 
@@ -37,6 +44,14 @@ class Graphic:
         # Création du bouton d'envoi
         self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", borderwidth=0, font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
+
+        disconnect_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10), command=self.logout)
+        disconnect_button.place(x=130, y=260)
+
+    def logout(self):
+        self.root.destroy()
+        os.system('python Class/login.py')
+
 
     def show_textual_rooms(self):
         # Création de la fenêtre modale pour afficher les salons textuels
