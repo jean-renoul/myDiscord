@@ -8,7 +8,7 @@ class Graphic:
         self.root = tk.Tk()
         self.root.title("Discord")
         self.root.geometry("900x540")
-
+    
         # Création d'un widget Canvas avec un fond rouge
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  
 
@@ -47,6 +47,13 @@ class Graphic:
 
         disconnect_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10), command=self.logout)
 
+
+        # Création de la barre de défilement
+        self.scrollbar = Scrollbar(self.canvas, orient="vertical", command=self.chat_text.yview)
+        self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
+
+        # Connecter la barre de défilement à la zone de texte
+        self.chat_text.config(yscrollcommand=self.scrollbar.set)
     def logout(self):
         self.root.destroy()
         os.system('python Class/login.py')
