@@ -29,7 +29,7 @@ class Graphic:
         # Placement des boutons
         self.canvas.create_window(25, 80, anchor=tk.NW, window=self.button_textuel)
         self.canvas.create_window(25, 150, anchor=tk.NW, window=self.button_vocal)
-        self.canvas.create_window(700, 80, anchor=tk.NW, window=self.button_logout)
+        self.canvas.create_window(25, 450, anchor=tk.NW, window=self.button_logout)
 
         # Création de la zone de chat
         frame = tk.Frame(self.root)  # Define the frame variable
