@@ -1,4 +1,4 @@
-from myDiscord.Class.Db import db
+from Class.Db import db
 
 class message:
     def __init__(self):

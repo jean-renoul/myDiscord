@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-from Db import db_instance
+from Class.Db import *
 
 class Register:
     def __init__(self):
         self.db_instance = db_instance
+        self.userInfo = []
 
         self.windows = tk.Tk()
         self.windows.title("Register")
@@ -52,8 +53,10 @@ class Register:
         else:
             params = (firstname, lastname, email, password)
             self.db_instance.executeQuery("INSERT INTO users (prenom, nom, email, mdp) VALUES (%s, %s, %s, %s)", params)
+            self.userInfo = [firstname, lastname, email, password]
             messagebox.showinfo("Succès", "Inscription réussie")
+            self.windows.destroy()
 
-if __name__ == "__main__":
-    app = Register()
-    app.windows.mainloop()
+#if __name__ == "__main__":
+#    app = Register()
+#    app.windows.mainloop()
