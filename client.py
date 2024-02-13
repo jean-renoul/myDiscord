@@ -4,6 +4,8 @@ from datetime import datetime
 from colorama import Fore, init
 from threading import Thread
 from Class.User import user
+from Class.login import Login
+from Class.register import Register
 
 
 # Initialize colors
@@ -36,13 +38,29 @@ except Exception as e:
     exit()
 
 # Get user information
-firstname = input("Enter your firstname: ")
-lastname = input("Enter your lastname: ")
-email = input("Enter your email: ")
-password = input("Enter your password: ")
+#firstname = input("Enter your firstname: ")
+#lastname = input("Enter your lastname: ")
+#email = input("Enter your email: ")
+#password = input("Enter your password: ")
 
 # Create user instance
-client = user(firstname, lastname, email, password)
+    
+app = Login()
+app.windows.mainloop()
+user_info = app.userInfo
+if user_info == []:
+    app = Register()
+    app.windows.mainloop()
+    user_info = app.userInfo
+    client = user(user_info[0], user_info[1], user_info[2], user_info[3])
+    print (user_info[0], user_info[1], user_info[2], user_info[3])
+else:
+    client = user(user_info[2], user_info[1], user_info[3], user_info[4])
+    print (user_info[2], user_info[1], user_info[3], user_info[4])
+
+
+
+
 client.clientSocket = clientSocket
 
 
@@ -71,7 +89,7 @@ while True:
     
     # Add timestamp, name, and color to the message
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
-    to_send = f"{client.channel} {separator_token} {client_color}[{date_now}] {firstname}{separator_token}{to_send}{Fore.RESET}"
+    #to_send = f"{client.channel} {separator_token} {client_color}[{date_now}] {firstname}{separator_token}{to_send}{Fore.RESET}"
     
     # Send the message to the server
     clientSocket.send(to_send.encode())

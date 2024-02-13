@@ -2,17 +2,17 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
-from Db import db_instance
+from Class.Db import *
 import os
 
 class Login:
     def __init__(self):
         self.db_instance = db_instance
-
+        self.userInfo = []
         self.windows = tk.Tk()
         self.windows.title("Login")
         self.windows.geometry("600x300")
-        self.windows.resizable(False, False)
+        self.windows.resizable(False, False)       
 
         frame = Frame(self.windows, width=600, height=300, bg="#2c2f33", bd=5)
         frame.place(x=0, y=0)
@@ -48,7 +48,7 @@ class Login:
 
     def newone(self):
         self.windows.destroy()
-        os.system('python Class/register.py')
+        #os.system('python Class/register.py')
 
     def check_login(self):
         email = self.email_entry.get()
@@ -61,10 +61,12 @@ class Login:
         if result:
             messagebox.showinfo("Succès", "Vous êtes connecté avec succès!")
             self.windows.destroy()  # Ferme la fenêtre de connexion
-            os.system('python Class/Graphic.py')  # Lance la page Graphic.py
+            self.userInfo = result[0]
+            #os.system('python Class/Graphic.py')  # Lance la page Graphic.py
         else:
             messagebox.showerror("Erreur", "Adresse e-mail ou mot de passe incorrect")
 
-if __name__ == "__main__":
-    app = Login()
-    app.windows.mainloop()
+
+#if __name__ == "__main__":
+#    app = Login()
+#    app.windows.mainloop()
