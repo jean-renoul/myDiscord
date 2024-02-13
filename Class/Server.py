@@ -1,4 +1,4 @@
-from myDiscord.Class.Channel import channel
+from Channel import channel
 import socket
 import threading
 
