@@ -3,7 +3,7 @@ import random
 from datetime import datetime
 from colorama import Fore, init
 from threading import Thread
-from myDiscord.Class.User import user
+from Class.User import user
 
 
 # Initialize colors
