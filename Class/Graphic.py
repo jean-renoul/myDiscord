@@ -8,9 +8,7 @@ class Graphic:
         self.root = tk.Tk()
         self.root.title("Discord")
         self.root.geometry("900x540")
-
-
-
+    
         color = ["Salon 1", "Salon 2", "Salon 3"]  # Suppression de "Salons textuels" de la liste déroulante
 
         my_option = customtkinter.CTkOptionMenu(self.root, values=color)
@@ -25,7 +23,6 @@ class Graphic:
         my_option2.set("Salons vocaux")  # Définition de "Salons textuels" comme valeur par défaut
 
         my_option2.pack(pady=10)
-
         # Création d'un widget Canvas avec un fond rouge
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  
 
@@ -46,7 +43,7 @@ class Graphic:
         # Placement des boutons
         self.canvas.create_window(25, 80, anchor=tk.NW, window=self.button_textuel)
         self.canvas.create_window(25, 150, anchor=tk.NW, window=self.button_vocal)
-        self.canvas.create_window(700, 80, anchor=tk.NW, window=self.button_logout)
+        self.canvas.create_window(25, 450, anchor=tk.NW, window=self.button_logout)
 
         # Création de la zone de chat
         frame = tk.Frame(self.root)  # Define the frame variable
@@ -64,6 +61,13 @@ class Graphic:
 
         disconnect_button = Button(frame, text="S'inscrire", width=10, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 10), command=self.logout)
 
+
+        # Création de la barre de défilement
+        self.scrollbar = Scrollbar(self.canvas, orient="vertical", command=self.chat_text.yview)
+        self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
+
+        # Connecter la barre de défilement à la zone de texte
+        self.chat_text.config(yscrollcommand=self.scrollbar.set)
     def logout(self):
         self.root.destroy()
         os.system('python Class/login.py')
