@@ -2,12 +2,29 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import os
-
+import customtkinter 
 class Graphic:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Discord")
         self.root.geometry("900x540")
+
+
+
+        color = ["Salon 1", "Salon 2", "Salon 3"]  # Suppression de "Salons textuels" de la liste déroulante
+
+        my_option = customtkinter.CTkOptionMenu(self.root, values=color)
+        my_option.set("Salons textuels")  # Définition de "Salons textuels" comme valeur par défaut
+
+        my_option.pack(pady=10)
+
+
+        color2 = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]  # Suppression de "Salons textuels" de la liste déroulante
+
+        my_option2 = customtkinter.CTkOptionMenu(self.root, values=color2)
+        my_option2.set("Salons vocaux")  # Définition de "Salons textuels" comme valeur par défaut
+
+        my_option2.pack(pady=10)
 
         # Création d'un widget Canvas avec un fond rouge
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")  
