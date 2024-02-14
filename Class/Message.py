@@ -1,9 +1,9 @@
-from Class.Db import db
+from Class.Db import Db
 
 class message:
     def __init__(self):
         self.table = 'message'
-        self.db = db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+        self.db = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
 
     def create(self, texte, auteur, heure):
         querry = f'INSERT INTO {self.table} (texte, auteur, heure) VALUES (%s, %s, %s)'

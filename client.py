@@ -58,12 +58,7 @@ else:
     client = user(user_info[2], user_info[1], user_info[3], user_info[4])
     print (user_info[2], user_info[1], user_info[3], user_info[4])
 
-
-
-
 client.clientSocket = clientSocket
-
-
 
 def listen_for_messages():
     try:
