@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import os
 import customtkinter
+from PIL import Image, ImageTk
 
 class Graphic:
     def __init__(self):
@@ -37,12 +38,47 @@ class Graphic:
         self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", borderwidth=0, font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
 
+        emoji_data = [('emojis/u0001f44a.png', '\U0001F44A'), ('emojis/u0001f44c.png', '\U0001F44C'), ('emojis/u0001f44d.png', '\U0001F44D'),
+                      ('emojis/u0001f495.png', '\U0001F495'), ('emojis/u0001f496.png', '\U0001F496'), ('emojis/u0001f4a6.png', '\U0001F4A6'),
+                      ('emojis/u0001f4a9.png', '\U0001F4A9'), ('emojis/u0001f4af.png', '\U0001F4AF'), ('emojis/u0001f595.png', '\U0001F595'),
+                      ('emojis/u0001f600.png', '\U0001F600'), ('emojis/u0001f602.png', '\U0001F602'), ('emojis/u0001f603.png', '\U0001F603'),
+                      ('emojis/u0001f605.png', '\U0001F605'), ('emojis/u0001f606.png', '\U0001F606'), ('emojis/u0001f608.png', '\U0001F608'),
+                      ('emojis/u0001f60d.png', '\U0001F60D'), ('emojis/u0001f60e.png', '\U0001F60E'), ('emojis/u0001f60f.png', '\U0001F60F'),
+                      ('emojis/u0001f610.png', '\U0001F610'), ('emojis/u0001f618.png', '\U0001F618'), ('emojis/u0001f61b.png', '\U0001F61B'),
+                      ('emojis/u0001f61d.png', '\U0001F61D'), ('emojis/u0001f621.png', '\U0001F621'), ('emojis/u0001f624.png', '\U0001F621'),
+                      ('emojis/u0001f631.png', '\U0001F631'), ('emojis/u0001f632.png', '\U0001F632'), ('emojis/u0001f634.png', '\U0001F634'),
+                      ('emojis/u0001f637.png', '\U0001F637'), ('emojis/u0001f642.png', '\U0001F642'), ('emojis/u0001f64f.png', '\U0001F64F'),
+                      ('emojis/u0001f920.png', '\U0001F920'), ('emojis/u0001f923.png', '\U0001F923'), ('emojis/u0001f928.png', '\U0001F928')]
+
+        emoji_x_pos = 720
+        emoji_y_pos = 310
+        for Emoji in emoji_data:
+            emojis = Image.open(Emoji[0])
+            emojis = emojis.resize((20, 20))
+            emojis = ImageTk.PhotoImage(emojis)
+
+            emoji_unicode = Emoji[1]
+            emoji_label = tk.Label(self.canvas, image=emojis, text=emoji_unicode, bg="#2c2f33", cursor="hand2")
+            emoji_label.image = emojis
+            emoji_label.place(x=emoji_x_pos, y=emoji_y_pos)
+            emoji_label.bind('<Button-1>', lambda x: self.insert_emoji(x))
+
+            emoji_x_pos += 25
+            cur_index = emoji_data.index(Emoji)
+            if (cur_index + 1) % 6 == 0:
+                emoji_y_pos += 25
+                emoji_x_pos = 720
+
+        self.scrollbar = Scrollbar(self.canvas, orient="vertical", command=self.chat_text.yview)
+        self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
+        self.chat_text.config(yscrollcommand=self.scrollbar.set)
+
         # Création de la barre de défilement
         self.scrollbar = Scrollbar(self.canvas, orient="vertical", command=self.chat_text.yview)
         self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
 
         Salons_textuels = ["Salon 1", "Salon 2", "Salon 3"]  # Suppression de "Salons textuels" de la liste déroulante
-
+        
         my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels)
         my_option.set("Salons textuels")  # Définition de "Salons textuels" comme valeur par défaut
 
@@ -72,6 +108,11 @@ class Graphic:
 
             # Désactiver la zone de chat à nouveau
             self.chat_text.config(state="disabled")
+
+    def insert_emoji(self, event):
+        emoji_unicode = event.widget['text']
+        self.message_entry.insert(tk.END, emoji_unicode)
+        
 
     def afficher(self):
         self.root.mainloop()
