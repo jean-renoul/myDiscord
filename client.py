@@ -4,8 +4,12 @@ from datetime import datetime
 from colorama import Fore, init
 from threading import Thread
 from Class.User import user
+<<<<<<<<< Temporary merge branch 1
+=========
 from Class.login import Login
 from Class.register import Register
+=======
+>>>>>>> Graphic_chat
 
 
 # Initialize colors
