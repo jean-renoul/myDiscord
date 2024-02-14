@@ -66,7 +66,7 @@ class Login:
         else:
             messagebox.showerror("Erreur", "Adresse e-mail ou mot de passe incorrect")
 
-
-#if __name__ == "__main__":
-#    app = Login()
-#    app.windows.mainloop()
+if __name__ == "__main__":
+    app = Login()
+    app.windows.mainloop()
+    #Test
