@@ -8,8 +8,6 @@ from Class.User import user
 =========
 from Class.login import Login
 from Class.register import Register
-=======
->>>>>>> Graphic_chat
 
 
 # Initialize colors
