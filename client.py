@@ -4,16 +4,9 @@ from datetime import datetime
 from colorama import Fore, init
 from threading import Thread
 from Class.User import user
-<<<<<<< HEAD
 from Class.login import Login
 from Class.register import Register
-=======
-<<<<<<< HEAD
-from Class.login import Login
-from Class.register import Register
-=======
->>>>>>> Graphic_chat
->>>>>>> main
+
 
 
 # Initialize colors
