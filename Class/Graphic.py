@@ -14,8 +14,6 @@ class Graphic:
         self.root.resizable(False, False)
         self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
 
-
-
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
         self.image_haut_milieu = tk.PhotoImage(file="images/Titre.png")
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
@@ -68,10 +66,8 @@ class Graphic:
         self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
         self.chat_text.config(yscrollcommand=self.scrollbar.set)
 
-
-
         Salons_textuels = self.get_channels()
-        Salons_vocaux = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]
+        Salons_vocaux = self.get_channels()
 
         my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels)
         my_option.set("Salons textuels")
@@ -100,8 +96,11 @@ class Graphic:
     def get_channels(self):
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels        
+        return salons_textuels     
 
+    def add_channel(self, channel_name):
+        self.salons_textuels_menu._command(label=channel_name, command=lambda: self.select_channel(channel_name))
+        
     def update_gui(self):
         self.root.update_idletasks()
         self.root.update()
@@ -114,24 +113,13 @@ class Graphic:
         message = self.message_entry.get()
         if message:
             self.chat_text.config(state="normal")
-
-            # Ajout du message à la zone de chat
             self.message_entry.delete(0, tk.END)
-            self.chat_text.config(state="disabled")
-
-            # Désactiver la zone de chat à nouveau
             self.chat_text.config(state="disabled")
             return message
 
-
     def receive_message(self, message):
-        # Activer la zone de chat pour ajouter le message
         self.chat_text.config(state="normal")
-
-        # Ajout du message à la zone de chat
         self.chat_text.insert(tk.END, message + "\n")
-
-        # Désactiver la zone de chat à nouveau
         self.chat_text.config(state="disabled")
 
     def insert_emoji(self, event):
@@ -141,15 +129,19 @@ class Graphic:
     def create_channel(self):
         new_channel_name = self.new_channel_entry.get()
         if new_channel_name:
-            print(f"Salon textuel créé : {new_channel_name}")
-            self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
+            self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))
+            self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.get_channels())
+            self.salons_textuels_menu.set("Salons textuels")
+            self.salons_textuels_menu.place(relx=0.025, rely=0.15)
             self.new_channel_entry.delete(0, tk.END)
     
     def create_voice_channel(self):
         new_channel_name = self.new_voice_channel_entry.get()
         if new_channel_name:
-            print(f"Salon vocal créé : {new_channel_name}")
-            self.salons_vocaux_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
+            self.db_instance.executeQuery("INSERT INTO voice_channel (name) VALUES (%s)", (new_channel_name,))
+            self.salons_vocaux_menu = customtkinter.CTkOptionMenu(self.root, values=self.get_channels())
+            self.salons_vocaux_menu.set("Salons vocaux")
+            self.salons_vocaux_menu.place(relx=0.025, rely=0.5)
             self.new_voice_channel_entry.delete(0, tk.END)
 
     def select_channel(self, channel_name):
@@ -157,7 +149,6 @@ class Graphic:
 
     def afficher(self):
         self.root.mainloop()
-
 
 # Instanciation de la classe et appel de la méthode pour afficher la fenêtre
 if __name__ == "__main__":
