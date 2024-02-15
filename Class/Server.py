@@ -2,9 +2,6 @@ from Channel import channel
 import socket
 import threading
 
-
-
-
 class server:
     def __init__(self):
         self.channels = {}
@@ -18,6 +15,7 @@ class server:
         while True:
             try:
                 message = clientSocket.recv(1024).decode()
+                print (message)
             except Exception as e:
                 # client no longer connected
                 # remove it from the set
@@ -26,8 +24,11 @@ class server:
                 break
             else:
                 message = message.replace ('<SEP>', ': ')
-                channelName, messageUser, messageContent = message.split(': ')
-                messageContent = f"{messageUser}: {messageContent}"
+                print (message)
+                channelName, messageDate, clientName,  messageContent= message.split(': ')
+                print (channelName, messageDate, clientName, messageContent)
+                messageContent = f"{messageDate}: {clientName}: {messageContent}"
+                print (messageContent)
                 channelName = channelName.strip()
                 if channelName not in self.channels:
                     message = f"[!] Error: Channel {channelName} does not exist."

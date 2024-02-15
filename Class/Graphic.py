@@ -11,6 +11,8 @@ class Graphic:
         self.root.geometry("900x540")
         self.root.resizable(False, False)
 
+
+
         # Création d'un widget Canvas avec un fond rouge
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
 
@@ -56,6 +58,12 @@ class Graphic:
         # Connecter la barre de défilement à la zone de texte
         self.chat_text.config(yscrollcommand=self.scrollbar.set)
 
+        self.update_gui()
+
+    def update_gui(self):
+        self.root.update_idletasks()
+        self.root.update()
+
     def logout(self):
         self.root.destroy()
         os.system('python Class/login.py')
@@ -72,10 +80,26 @@ class Graphic:
 
             # Désactiver la zone de chat à nouveau
             self.chat_text.config(state="disabled")
+            return message
+
+
+    def receive_message(self, message):
+        # Activer la zone de chat pour ajouter le message
+        self.chat_text.config(state="normal")
+
+        # Ajout du message à la zone de chat
+        self.chat_text.insert(tk.END, message + "\n")
+
+        # Désactiver la zone de chat à nouveau
+        self.chat_text.config(state="disabled")
 
     def afficher(self):
         self.root.mainloop()
 
+    
+
+    
+
 # Instanciation de la classe et appel de la méthode pour afficher la fenêtre
-app = Graphic()
-app.afficher()
+#app = Graphic()
+#app.afficher()

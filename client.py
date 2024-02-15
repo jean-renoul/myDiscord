@@ -1,25 +1,12 @@
 import socket
 import random
 from datetime import datetime
-from colorama import Fore, init
 from threading import Thread
 from Class.User import user
 from Class.login import Login
 from Class.register import Register
+from Class.Graphic import Graphic
 
-
-# Initialize colors
-init()
-
-# Set the available colors
-colors = [Fore.BLUE, Fore.CYAN, Fore.GREEN, Fore.LIGHTBLACK_EX, 
-    Fore.LIGHTBLUE_EX, Fore.LIGHTCYAN_EX, Fore.LIGHTGREEN_EX, 
-    Fore.LIGHTMAGENTA_EX, Fore.LIGHTRED_EX, Fore.LIGHTWHITE_EX, 
-    Fore.LIGHTYELLOW_EX, Fore.MAGENTA, Fore.RED, Fore.WHITE, Fore.YELLOW
-]
-
-# Choose a random color for the client
-client_color = random.choice(colors)
 
 # Server's IP address and port
 SERVER_HOST = "127.0.0.1"
@@ -60,34 +47,48 @@ else:
 
 client.clientSocket = clientSocket
 
+app = Graphic()
+
+
+
 def listen_for_messages():
     try:
         while True:
             message = clientSocket.recv(1024).decode()
-            print("\n" + message)
+            app.receive_message(message)
     except Exception as e:
         print(f"Error occurred while listening for messages: {e}")
 
 # Start listening for messages in a separate thread
-t = Thread(target=listen_for_messages)
-t.daemon = True
-t.start()
+t1 = Thread(target=listen_for_messages)
+t1.daemon = True
+t1.start()
 
 # Main loop to send messages
-while True:
-    # Input message to send to the server
-    to_send = input("Enter your message ('q' to quit): ")
-    
-    # Check if the user wants to quit
-    if to_send.lower() == 'q':
-        break
+
+def send_message(message):
+    if message.lower() == 'q':
+        # Close the socket and exit the program
+        clientSocket.close()
+        exit()
     
     # Add timestamp, name, and color to the message
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
-    #to_send = f"{client.channel} {separator_token} {client_color}[{date_now}] {firstname}{separator_token}{to_send}{Fore.RESET}"
+    to_send = f"{client.channel}{separator_token}[{date_now}]{separator_token}{client.firstname}{separator_token}{message}"
     
     # Send the message to the server
     clientSocket.send(to_send.encode())
 
+# Function to handle the "Send" button click event
+def handle_send_button():
+    message = app.send_message()
+    send_message(message)
+
+# Set the "Send" button command to the handle_send_button function
+app.send_button.config(command=handle_send_button)
+
+app.afficher()
+
+
 # Close the socket
-clientSocket.close()
+#clientSocket.close()
