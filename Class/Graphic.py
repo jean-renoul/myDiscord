@@ -4,7 +4,7 @@ from tkinter import messagebox
 import os
 from PIL import Image, ImageTk
 import customtkinter
-from Db import *
+from Class.Db import *
 
 class Graphic:
     def __init__(self):
@@ -95,13 +95,12 @@ class Graphic:
 
         self.create_voice_channel_button = Button(self.root, text="Créer un salon vocal", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_voice_channel)
         self.create_voice_channel_button.place(relx=0.025, rely=0.7)
+        self.update_gui()
 
     def get_channels(self):
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels
-
-        self.update_gui()
+        return salons_textuels        
 
     def update_gui(self):
         self.root.update_idletasks()
@@ -115,10 +114,8 @@ class Graphic:
         message = self.message_entry.get()
         if message:
             self.chat_text.config(state="normal")
-            self.chat_text.insert(tk.END, message + "\n")
 
             # Ajout du message à la zone de chat
-            #self.chat_text.insert(tk.END, message + "\n")
             self.message_entry.delete(0, tk.END)
             self.chat_text.config(state="disabled")
 
@@ -161,10 +158,8 @@ class Graphic:
     def afficher(self):
         self.root.mainloop()
 
-    
-
-    
 
 # Instanciation de la classe et appel de la méthode pour afficher la fenêtre
-#app = Graphic()
-#app.afficher()
+if __name__ == "__main__":
+    app = Graphic()
+    app.afficher()

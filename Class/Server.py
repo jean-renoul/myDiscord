@@ -42,6 +42,7 @@ class server:
             self.clientSockets.add(clientSocket)
             clientThread = threading.Thread(target=self.listenForClients, args=(clientSocket,))
             clientThread.start()
+            print (self.clientSockets)
 
     def createChannel(self, channelName):
         self.channels[channelName] = channel(channelName)

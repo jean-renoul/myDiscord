@@ -7,7 +7,7 @@ import os
 
 class Login:
     def __init__(self):
-        self.db_instance = db_instance
+        self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
         self.userInfo = []
         self.windows = tk.Tk()
         self.windows.title("Login")
@@ -67,6 +67,6 @@ class Login:
             messagebox.showerror("Erreur", "Adresse e-mail ou mot de passe incorrect")
 
 
-#if __name__ == "__main__":
-#    app = Login()
-#    app.windows.mainloop()
+if __name__ == "__main__":
+    app = Login()
+    app.windows.mainloop()
