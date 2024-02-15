@@ -31,5 +31,3 @@ class Db:
         result = self.cursor.fetchall()
         self.disconnect()
         return result
-
-db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
