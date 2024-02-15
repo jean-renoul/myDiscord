@@ -1,5 +1,4 @@
 import socket
-import random
 from datetime import datetime
 from threading import Thread
 from Class.User import user
@@ -74,7 +73,7 @@ def send_message(message):
     
     # Add timestamp, name, and color to the message
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
-    to_send = f"{client.channel}{separator_token}[{date_now}]{separator_token}{client.firstname}{separator_token}{message}"
+    to_send = f"{client.channel}{separator_token}[{date_now}]{separator_token}{client.firstname}{separator_token}{client.lastname}{separator_token}{message}"
     
     # Send the message to the server
     clientSocket.send(to_send.encode())

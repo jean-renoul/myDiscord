@@ -24,11 +24,8 @@ class server:
                 break
             else:
                 message = message.replace ('<SEP>', ': ')
-                print (message)
-                channelName, messageDate, clientName,  messageContent= message.split(': ')
-                print (channelName, messageDate, clientName, messageContent)
-                messageContent = f"{messageDate}: {clientName}: {messageContent}"
-                print (messageContent)
+                channelName, messageDate, clientFirstName, clientLastName,  messageContent= message.split(': ')
+                messageContent = f"{messageDate}: {clientFirstName} {clientLastName}: {messageContent}"
                 channelName = channelName.strip()
                 if channelName not in self.channels:
                     message = f"[!] Error: Channel {channelName} does not exist."
@@ -36,7 +33,7 @@ class server:
                 else:
                     self.joinChannel(channelName, clientSocket)
                     self.sendToChannel(channelName, messageContent)
-            
+
 
     def start(self):
         while True:

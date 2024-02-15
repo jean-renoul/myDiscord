@@ -66,7 +66,7 @@ class Graphic:
 
     def logout(self):
         self.root.destroy()
-        os.system('python Class/login.py')
+        os.system('python client.py')
 
     def send_message(self):
         message = self.message_entry.get()
@@ -75,7 +75,7 @@ class Graphic:
             self.chat_text.config(state="normal")
 
             # Ajout du message à la zone de chat
-            self.chat_text.insert(tk.END, message + "\n")
+            #self.chat_text.insert(tk.END, message + "\n")
             self.message_entry.delete(0, tk.END)
 
             # Désactiver la zone de chat à nouveau
