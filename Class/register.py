@@ -5,7 +5,7 @@ from Class.Db import *
 
 class Register:
     def __init__(self):
-        self.db_instance = db_instance
+        self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
         self.userInfo = []
 
         self.windows = tk.Tk()
