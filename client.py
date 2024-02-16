@@ -7,6 +7,7 @@ from Class.register import Register
 from Class.Graphic import Graphic
 
 
+
 # Server's IP address and port
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 8080
@@ -83,8 +84,15 @@ def handle_send_button():
     message = app.send_message()
     send_message(message)
 
+def handle_switch_channel(channel_name):
+    channel_name = app.select_channel(channel_name)
+    client.joinChannel(channel_name)
+    send_message("switch")
+    print (client.channel)
+
 # Set the "Send" button command to the handle_send_button function
 app.send_button.config(command=handle_send_button)
+app.salons_textuels_menu.configure(command=handle_switch_channel)
 
 app.afficher()
 
