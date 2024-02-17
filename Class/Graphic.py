@@ -69,7 +69,7 @@ class Graphic:
         Salons_textuels = self.get_channels()
         Salons_vocaux = self.get_channels()
 
-        my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels)
+        my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels, command=self.select_channel)
         my_option.set("Salons textuels")
         my_option.place(relx=0.025, rely=0.15)
 
@@ -145,7 +145,7 @@ class Graphic:
             self.new_voice_channel_entry.delete(0, tk.END)
 
     def select_channel(self, channel_name):
-        print(f"Salon sélectionné : {channel_name}")
+        return channel_name
 
     def afficher(self):
         self.root.mainloop()
