@@ -96,19 +96,16 @@ class Graphic:
         self.create_voice_channel_button = Button(self.root, text="Créer un salon vocal", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_voice_channel)
         self.create_voice_channel_button.place(relx=0.025, rely=0.7)
         self.update_gui()
+        
+
+    def update_gui(self):
+            self.root.update_idletasks()
+            self.root.update()  
 
     def get_channels(self):
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels        
-
-    def update_gui(self):
-        self.root.update_idletasks()
-        self.root.update()
-
-    def logout(self):
-        self.root.destroy()
-        os.system('python client.py')
+        return salons_textuels      
 
     def send_message(self):
         message = self.message_entry.get()
@@ -129,7 +126,7 @@ class Graphic:
         self.chat_text.config(state="normal")
 
         # Ajout du message à la zone de chat
-        self.chat_text.insert(tk.END, message + "\n")
+        self.chat_text.insert(tk.END, message)
 
         # Désactiver la zone de chat à nouveau
         self.chat_text.config(state="disabled")
@@ -153,8 +150,15 @@ class Graphic:
             self.new_voice_channel_entry.delete(0, tk.END)
 
     def select_channel(self, channel_name):
+        #delete all messages
+        self.chat_text.config(state="normal")
+        self.chat_text.delete(1.0, tk.END)
+        self.chat_text.config(state="disabled")     
         return channel_name
-
+    
+    def logout(self):
+            self.root.destroy()
+            os.system('python client.py')
     def afficher(self):
         self.root.mainloop()
 
