@@ -46,6 +46,7 @@ class server:
             print(f"[+] {clientSocket} | {clientAdress} connected.")
             self.clientSockets.add(clientSocket)
             self.joinChannel('general', clientSocket)
+            self.getPreviousMessages('general', clientSocket)
             clientThread = threading.Thread(target=self.listenForClients, args=(clientSocket,))
             clientThread.start()
 
