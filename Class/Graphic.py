@@ -71,7 +71,7 @@ class Graphic:
 
 
         Salons_textuels = self.get_channels()
-        Salons_vocaux = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]
+        Salons_vocaux = self.get_vocal_channel()
 
         my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels, command=self.select_channel)
         my_option.set("Salons textuels")
@@ -106,6 +106,12 @@ class Graphic:
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
         return salons_textuels      
+    
+
+    def get_vocal_channel(self):
+        salons_vocaux = self.db_instance.fetch("SELECT name FROM vocal_channel")
+        salons_vocaux = [salon[0] for salon in salons_vocaux]
+        return salons_vocaux
 
     def send_message(self):
         message = self.message_entry.get()
