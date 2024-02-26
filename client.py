@@ -3,7 +3,7 @@ from datetime import datetime
 from threading import Thread
 from Class.User import User
 from Class.Login import Login
-from Class.register import Register
+from Class.Register import Register
 from Class.Graphic import Graphic
 from Class.Db import Db
 
