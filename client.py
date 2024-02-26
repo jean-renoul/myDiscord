@@ -42,13 +42,16 @@ if user_info == []:
     user_info = app.userInfo
     client = user(user_info[0], user_info[1], user_info[2], user_info[3])
     print (user_info[0], user_info[1], user_info[2], user_info[3])
+    app = Graphic(user_info[2])
 else:
     client = user(user_info[2], user_info[1], user_info[3], user_info[4])
     print (user_info[2], user_info[1], user_info[3], user_info[4])
+    app = Graphic(user_info[3])
 
 client.clientSocket = clientSocket
 
-app = Graphic()
+
+
 
 
 

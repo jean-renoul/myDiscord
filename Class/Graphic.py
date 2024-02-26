@@ -7,7 +7,8 @@ import customtkinter
 from Class.Db import *
 
 class Graphic:
-    def __init__(self):
+    def __init__(self, email):
+        self.email = email
         self.root = tk.Tk()
         self.root.title("Discord")
         self.root.geometry("900x540")
@@ -70,14 +71,14 @@ class Graphic:
 
 
 
-        Salons_textuels = self.get_channels()
-        Salons_vocaux = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]
+        self.Salons_textuels = self.get_channels()
+        self.Salons_vocaux = ["Salon vocal A", "Salon vocal B", "Salon vocal C"]
 
-        my_option = customtkinter.CTkOptionMenu(self.root, values=Salons_textuels, command=self.select_channel)
+        my_option = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
         my_option.set("Salons textuels")
         my_option.place(relx=0.025, rely=0.15)
 
-        my_option2 = customtkinter.CTkOptionMenu(self.root, values=Salons_vocaux)
+        my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.Salons_vocaux)
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
@@ -99,13 +100,24 @@ class Graphic:
         
 
     def update_gui(self):
-            self.root.update_idletasks()
-            self.root.update()  
+        self.root.update_idletasks()
+        self.root.update()  
 
     def get_channels(self):
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels      
+        return salons_textuels
+    
+    def set_channels(self, salons_textuels):
+        self.salons_textuels = salons_textuels
+    
+    def get_admin(self):
+        admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.email,))
+        admin = admin[0][0]
+        if admin == "True":
+            return True
+        else:
+            return False
 
     def send_message(self):
         message = self.message_entry.get()
@@ -137,10 +149,31 @@ class Graphic:
     
     def create_channel(self):
         new_channel_name = self.new_channel_entry.get()
-        if new_channel_name:
-            print(f"Salon textuel créé : {new_channel_name}")
-            self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
-            self.new_channel_entry.delete(0, tk.END)
+        authorization = self.get_admin()
+        if authorization == False and new_channel_name:
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour créer un salon.")
+        elif authorization == True and new_channel_name:
+            messagebox.showinfo("Succès", f"Salon textuel créé : {new_channel_name}")
+            self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))
+            self.salons_textuels = self.get_channels()
+            self.update_option_menu()
+        self.new_channel_entry.delete(0, tk.END)
+
+            #self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
+
+    def update_option_menu(self):
+        # Clear the existing OptionMenu
+        self.salons_textuels_menu.destroy()
+
+        # Create a new OptionMenu with the updated list of channels
+        self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.salons_textuels, command=self.select_channel)
+        self.salons_textuels_menu.set("Salons textuels")
+        self.salons_textuels_menu.place(relx=0.025, rely=0.15)
+        
+        #if new_channel_name:
+            #print(f"Salon textuel créé : {new_channel_name}")
+            #self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
+            #self.new_channel_entry.delete(0, tk.END)
     
     def create_voice_channel(self):
         new_channel_name = self.new_voice_channel_entry.get()
