@@ -1,9 +1,9 @@
-from Channel import channel
+from Channel import Channel
 import socket
 import threading
 from Db import Db
 
-class server:
+class Server:
     def __init__(self):
         self.channels = {}
         self.clientSockets = set()
@@ -53,7 +53,7 @@ class server:
         channelNames = self.Db.fetch("SELECT name FROM channel")
         channelNames = [channelName[0] for channelName in channelNames]
         for channelName in channelNames:
-            self.channels[channelName] = channel(channel)
+            self.channels[channelName] = Channel(Channel)
 
     def joinChannel(self, channelName, clientSocket):
         for channel in self.channels:
@@ -76,6 +76,6 @@ class server:
         self.channels[channelName].sendMessage(toSend)
 
 if __name__ == "__main__":
-    server1 = server()
+    server1 = Server()
     server1.start()
 
