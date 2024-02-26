@@ -1,9 +1,9 @@
-from Channel import channel
+from Channel import Channel
 import socket
 import threading
 from Db import Db
 
-class server:
+class Server:
     def __init__(self):
         self.channels = {}
         self.clientSockets = set()
@@ -29,11 +29,14 @@ class server:
                 channelName, messageDate, clientFirstName, clientLastName,  messageContent= message.split(': ')
                 message = f"{messageDate}: {clientFirstName} {clientLastName}: {messageContent}"
                 channelName = channelName.strip()
+                messageDate = messageDate.strip()
 
                 if messageContent == "switch":
                     self.joinChannel(channelName, clientSocket)
+                    self.getPreviousMessages(channelName, clientSocket)
                 else:
                     self.sendToChannel(channelName, message)
+                    self.Db.executeQuery("INSERT INTO message (texte, auteur, heure, channel) VALUES (%s, %s, %s, %s)", (messageContent, clientFirstName + " " + clientLastName, messageDate, channelName))
 
 
     def start(self):
@@ -50,7 +53,7 @@ class server:
         channelNames = self.Db.fetch("SELECT name FROM channel")
         channelNames = [channelName[0] for channelName in channelNames]
         for channelName in channelNames:
-            self.channels[channelName] = channel(channel)
+            self.channels[channelName] = Channel(Channel)
 
     def joinChannel(self, channelName, clientSocket):
         for channel in self.channels:
@@ -59,13 +62,20 @@ class server:
                 print (f"[-] {clientSocket} left {channel} channel.")
         self.channels[channelName].addUser(clientSocket)
         print (f"[+] {clientSocket} joined {channelName} channel.")
-        
+
+    def getPreviousMessages(self, channelName, clientSocket):
+        previous_messages = self.Db.fetch("SELECT * FROM message WHERE channel = %s", (channelName,))
+        for message in previous_messages:
+            print (message)
+            message = f'{message[3]}: {message[2]}: {message[1]}\n'
+            clientSocket.send(message.encode())
 
 
     def sendToChannel(self, channelName, message):
-        self.channels[channelName].sendMessage(message)
+        toSend = f"{message}\n"
+        self.channels[channelName].sendMessage(toSend)
 
 if __name__ == "__main__":
-    server1 = server()
+    server1 = Server()
     server1.start()
 

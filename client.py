@@ -1,13 +1,14 @@
 import socket
 from datetime import datetime
 from threading import Thread
-from Class.User import user
-from Class.login import Login
+from Class.User import User
+from Class.Login import Login
 from Class.register import Register
 from Class.Graphic import Graphic
+from Class.Db import Db
 
 
-
+db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
 # Server's IP address and port
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 8080
@@ -39,10 +40,10 @@ if user_info == []:
     app = Register()
     app.windows.mainloop()
     user_info = app.userInfo
-    client = user(user_info[0], user_info[1], user_info[2], user_info[3])
+    client = User(user_info[0], user_info[1], user_info[2], user_info[3])
     print (user_info[0], user_info[1], user_info[2], user_info[3])
 else:
-    client = user(user_info[2], user_info[1], user_info[3], user_info[4])
+    client = User(user_info[2], user_info[1], user_info[3], user_info[4])
     print (user_info[2], user_info[1], user_info[3], user_info[4])
 
 client.clientSocket = clientSocket
@@ -66,15 +67,11 @@ t1.start()
 
 # Main loop to send messages
 
-def send_message(message):
-    if message.lower() == 'q':
-        # Close the socket and exit the program
-        clientSocket.close()
-        exit()
-    
+def send_message(message):    
     # Add timestamp, name, and color to the message
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
-    to_send = f"{client.channel}{separator_token}[{date_now}]{separator_token}{client.firstname}{separator_token}{client.lastname}{separator_token}{message}"
+    to_send = f"{client.channel}{separator_token}{date_now}{separator_token}{client.firstname}{separator_token}{client.lastname}{separator_token}{message}"
+
     
     # Send the message to the server
     clientSocket.send(to_send.encode())
@@ -94,7 +91,7 @@ def handle_switch_channel(channel_name):
 app.send_button.config(command=handle_send_button)
 app.salons_textuels_menu.configure(command=handle_switch_channel)
 
-app.afficher()
+app.show()
 
 
 # Close the socket

@@ -20,13 +20,13 @@ class Login:
         heading = Label(frame, text="Se connecter", fg="white", bg="#2c2f33", font=("Segoe UI", 30))
         heading.place(x=180, y=10)
 
-        Logo_Mail = Image.open("images/logo_mail.png")
+        Logo_Mail = Image.open("assets/images/logo_mail.png")
         Logo_Mail = Logo_Mail.resize((30, 30), Image.LANCZOS)
         self.logo_mail_image = ImageTk.PhotoImage(Logo_Mail)
         emailLabel = Label(frame, text="Email :", image=self.logo_mail_image, compound="left", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))
         emailLabel.place(x=100, y=100)
 
-        Logo_Password = Image.open("images/logo_password.png")
+        Logo_Password = Image.open("assets/images/logo_password.png")
         Logo_Password = Logo_Password.resize((30, 30), Image.LANCZOS)
         self.logo_password_image = ImageTk.PhotoImage(Logo_Password)
         passwordLabel = Label(frame, text="Password :", image=self.logo_password_image, compound="left", fg="#7289da", bg="#2c2f33", font=("Segoe UI", 17))

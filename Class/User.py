@@ -1,4 +1,4 @@
-class user:
+class User:
     def __init__(self, firstname, lastname, email, password, channel='general'):
         self.firstname = firstname
         self.lastname = lastname

@@ -17,7 +17,7 @@ class Graphic:
 
 
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
-        self.image_haut_milieu = tk.PhotoImage(file="images/Titre.png")
+        self.image_haut_milieu = tk.PhotoImage(file="assets/images/Titre.png")
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
         self.canvas.pack()
 
@@ -33,17 +33,17 @@ class Graphic:
         self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", borderwidth=0, font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
 
-        emoji_data = [('emojis/u0001f44a.png', '\U0001F44A'), ('emojis/u0001f44c.png', '\U0001F44C'), ('emojis/u0001f44d.png', '\U0001F44D'),
-                      ('emojis/u0001f495.png', '\U0001F495'), ('emojis/u0001f496.png', '\U0001F496'), ('emojis/u0001f4a6.png', '\U0001F4A6'),
-                      ('emojis/u0001f4a9.png', '\U0001F4A9'), ('emojis/u0001f4af.png', '\U0001F4AF'), ('emojis/u0001f595.png', '\U0001F595'),
-                      ('emojis/u0001f600.png', '\U0001F600'), ('emojis/u0001f602.png', '\U0001F602'), ('emojis/u0001f603.png', '\U0001F603'),
-                      ('emojis/u0001f605.png', '\U0001F605'), ('emojis/u0001f606.png', '\U0001F606'), ('emojis/u0001f608.png', '\U0001F608'),
-                      ('emojis/u0001f60d.png', '\U0001F60D'), ('emojis/u0001f60e.png', '\U0001F60E'), ('emojis/u0001f60f.png', '\U0001F60F'),
-                      ('emojis/u0001f610.png', '\U0001F610'), ('emojis/u0001f618.png', '\U0001F618'), ('emojis/u0001f61b.png', '\U0001F61B'),
-                      ('emojis/u0001f61d.png', '\U0001F61D'), ('emojis/u0001f621.png', '\U0001F621'), ('emojis/u0001f624.png', '\U0001F621'),
-                      ('emojis/u0001f631.png', '\U0001F631'), ('emojis/u0001f632.png', '\U0001F632'), ('emojis/u0001f634.png', '\U0001F634'),
-                      ('emojis/u0001f637.png', '\U0001F637'), ('emojis/u0001f642.png', '\U0001F642'), ('emojis/u0001f64f.png', '\U0001F64F'),
-                      ('emojis/u0001f920.png', '\U0001F920'), ('emojis/u0001f923.png', '\U0001F923'), ('emojis/u0001f928.png', '\U0001F928')]
+        emoji_data = [('assets/emojis/u0001f44a.png', '\U0001F44A'), ('assets/emojis/u0001f44c.png', '\U0001F44C'), ('assets/emojis/u0001f44d.png', '\U0001F44D'),
+                      ('assets/emojis/u0001f495.png', '\U0001F495'), ('assets/emojis/u0001f496.png', '\U0001F496'), ('assets/emojis/u0001f4a6.png', '\U0001F4A6'),
+                      ('assets/emojis/u0001f4a9.png', '\U0001F4A9'), ('assets/emojis/u0001f4af.png', '\U0001F4AF'), ('assets/emojis/u0001f595.png', '\U0001F595'),
+                      ('assets/emojis/u0001f600.png', '\U0001F600'), ('assets/emojis/u0001f602.png', '\U0001F602'), ('assets/emojis/u0001f603.png', '\U0001F603'),
+                      ('assets/emojis/u0001f605.png', '\U0001F605'), ('assets/emojis/u0001f606.png', '\U0001F606'), ('assets/emojis/u0001f608.png', '\U0001F608'),
+                      ('assets/emojis/u0001f60d.png', '\U0001F60D'), ('assets/emojis/u0001f60e.png', '\U0001F60E'), ('assets/emojis/u0001f60f.png', '\U0001F60F'),
+                      ('assets/emojis/u0001f610.png', '\U0001F610'), ('assets/emojis/u0001f618.png', '\U0001F618'), ('assets/emojis/u0001f61b.png', '\U0001F61B'),
+                      ('assets/emojis/u0001f61d.png', '\U0001F61D'), ('assets/emojis/u0001f621.png', '\U0001F621'), ('assets/emojis/u0001f624.png', '\U0001F621'),
+                      ('assets/emojis/u0001f631.png', '\U0001F631'), ('assets/emojis/u0001f632.png', '\U0001F632'), ('assets/emojis/u0001f634.png', '\U0001F634'),
+                      ('assets/emojis/u0001f637.png', '\U0001F637'), ('assets/emojis/u0001f642.png', '\U0001F642'), ('assets/emojis/u0001f64f.png', '\U0001F64F'),
+                      ('assets/emojis/u0001f920.png', '\U0001F920'), ('assets/emojis/u0001f923.png', '\U0001F923'), ('assets/emojis/u0001f928.png', '\U0001F928')]
 
         emoji_x_pos = 720
         emoji_y_pos = 310
@@ -96,19 +96,16 @@ class Graphic:
         self.create_voice_channel_button = Button(self.root, text="Créer un salon vocal", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_voice_channel)
         self.create_voice_channel_button.place(relx=0.025, rely=0.7)
         self.update_gui()
+        
+
+    def update_gui(self):
+            self.root.update_idletasks()
+            self.root.update()  
 
     def get_channels(self):
         salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
         salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels        
-
-    def update_gui(self):
-        self.root.update_idletasks()
-        self.root.update()
-
-    def logout(self):
-        self.root.destroy()
-        os.system('python client.py')
+        return salons_textuels      
 
     def send_message(self):
         message = self.message_entry.get()
@@ -129,7 +126,7 @@ class Graphic:
         self.chat_text.config(state="normal")
 
         # Ajout du message à la zone de chat
-        self.chat_text.insert(tk.END, message + "\n")
+        self.chat_text.insert(tk.END, message)
 
         # Désactiver la zone de chat à nouveau
         self.chat_text.config(state="disabled")
@@ -153,13 +150,20 @@ class Graphic:
             self.new_voice_channel_entry.delete(0, tk.END)
 
     def select_channel(self, channel_name):
+        #delete all messages
+        self.chat_text.config(state="normal")
+        self.chat_text.delete(1.0, tk.END)
+        self.chat_text.config(state="disabled")     
         return channel_name
-
-    def afficher(self):
+    
+    def logout(self):
+            self.root.destroy()
+            os.system('python client.py')
+    def show(self):
         self.root.mainloop()
 
 
 # Instanciation de la classe et appel de la méthode pour afficher la fenêtre
 if __name__ == "__main__":
     app = Graphic()
-    app.afficher()
+    app.show()
