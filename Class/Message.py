@@ -1,6 +1,6 @@
 from Class.Db import Db
 
-class message:
+class Message:
     def __init__(self):
         self.table = 'message'
         self.db = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')

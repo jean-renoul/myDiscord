@@ -3,7 +3,7 @@ import random
 from datetime import datetime
 from colorama import Fore, init
 from threading import Thread
-from myDiscord.Class.User import user
+from myDiscord.Class.User import User
 
 
 # Initialize colors
@@ -42,7 +42,7 @@ email = input("Enter your email: ")
 password = input("Enter your password: ")
 
 # Create user instance
-client = user(firstname, lastname, email, password, 'autre')
+client = User(firstname, lastname, email, password, 'autre')
 client.clientSocket = clientSocket
 
 
