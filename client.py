@@ -1,9 +1,9 @@
 import socket
 from datetime import datetime
 from threading import Thread
-from Class.User import user
-from Class.login import Login
-from Class.register import Register
+from Class.User import User
+from Class.Login import Login
+from Class.Register import Register
 from Class.Graphic import Graphic
 from Class.Db import Db
 
@@ -40,15 +40,18 @@ if user_info == []:
     app = Register()
     app.windows.mainloop()
     user_info = app.userInfo
-    client = user(user_info[0], user_info[1], user_info[2], user_info[3])
+    client = User(user_info[0], user_info[1], user_info[2], user_info[3])
     print (user_info[0], user_info[1], user_info[2], user_info[3])
+    app = Graphic(user_info[2])
 else:
-    client = user(user_info[2], user_info[1], user_info[3], user_info[4])
+    client = User(user_info[2], user_info[1], user_info[3], user_info[4])
     print (user_info[2], user_info[1], user_info[3], user_info[4])
+    app = Graphic(user_info[3])
 
 client.clientSocket = clientSocket
 
-app = Graphic()
+
+
 
 
 
@@ -91,7 +94,7 @@ def handle_switch_channel(channel_name):
 app.send_button.config(command=handle_send_button)
 app.salons_textuels_menu.configure(command=handle_switch_channel)
 
-app.afficher()
+app.show()
 
 
 # Close the socket
