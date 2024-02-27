@@ -41,19 +41,14 @@ if user_info == []:
     app.windows.mainloop()
     user_info = app.userInfo
     client = User(user_info[0], user_info[1], user_info[2], user_info[3])
-    print (user_info[0], user_info[1], user_info[2], user_info[3])
     app = Graphic(user_info[2])
+
 else:
     client = User(user_info[2], user_info[1], user_info[3], user_info[4])
-    print (user_info[2], user_info[1], user_info[3], user_info[4])
     app = Graphic(user_info[3])
 
+
 client.clientSocket = clientSocket
-
-
-
-
-
 
 def listen_for_messages():
     try:
@@ -68,13 +63,12 @@ t1 = Thread(target=listen_for_messages)
 t1.daemon = True
 t1.start()
 
-# Main loop to send messages
 
 def send_message(message):    
     # Add timestamp, name, and color to the message
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
     to_send = f"{client.channel}{separator_token}{date_now}{separator_token}{client.firstname}{separator_token}{client.lastname}{separator_token}{message}"
-
+    print (to_send)
     
     # Send the message to the server
     clientSocket.send(to_send.encode())
@@ -87,12 +81,23 @@ def handle_send_button():
 def handle_switch_channel(channel_name):
     channel_name = app.select_channel(channel_name)
     client.joinChannel(channel_name)
-    send_message("switch")
-    print (client.channel)
+    send_message("<COMMAND>switch")
+
+def handle_create_channel():
+    new_channel_name = app.create_channel()
+    if new_channel_name:
+        send_message(f"<COMMAND>create_channel | {new_channel_name}")
+        handle_switch_channel(new_channel_name)
+        app.text_rooms_menu.configure(command=handle_switch_channel)  # Update command
+        app.text_rooms_menu.set(new_channel_name)
+
+
+
 
 # Set the "Send" button command to the handle_send_button function
 app.send_button.config(command=handle_send_button)
 app.text_rooms_menu.configure(command=handle_switch_channel)
+app.create_channel_button.config(command=handle_create_channel)
 
 app.show()
 

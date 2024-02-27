@@ -72,15 +72,14 @@ class Graphic:
         self.text_rooms = self.get_channels()
         self.voice_rooms = self.get_vocal_channel()
 
-        my_option = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
-        my_option.set("Salons textuels")
-        my_option.place(relx=0.025, rely=0.15)
+        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
+        self.text_rooms_menu.set("Salons textuels")
+        self.text_rooms_menu.place(relx=0.025, rely=0.15)
 
         my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.voice_rooms)
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
-        self.text_rooms_menu = my_option
         self.voice_rooms_menu = my_option2
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
@@ -111,9 +110,6 @@ class Graphic:
         voice_rooms = self.db_instance.fetch("SELECT name FROM vocal_channel")
         voice_rooms = [salon[0] for salon in voice_rooms]
         return voice_rooms
-    
-    def set_channels(self, text_rooms):
-        self.text_rooms = text_rooms
     
     def get_admin(self):
         admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.email,))
@@ -151,26 +147,21 @@ class Graphic:
             messagebox.showerror("Erreur", "Vous n'avez pas les droits pour créer un salon.")
         elif authorization == True and new_channel_name:
             messagebox.showinfo("Succès", f"Salon textuel créé : {new_channel_name}")
-            self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))
-            self.salons_textuels = self.get_channels()
-            self.update_option_menu()
-        self.new_channel_entry.delete(0, tk.END)
+            self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))            
+            self.update_option_menu()        
+        return new_channel_name
 
-            #self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
 
     def update_option_menu(self):
         # Clear the existing OptionMenu
         self.text_rooms_menu.destroy()
-
+        self.Salons_textuels = self.get_channels()
         # Create a new OptionMenu with the updated list of channels
-        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.salons_textuels, command=self.select_channel)
+        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
         self.text_rooms_menu.place(relx=0.025, rely=0.15)
-        
-        #if new_channel_name:
-            #print(f"Salon textuel créé : {new_channel_name}")
-            #self.salons_textuels_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
-            #self.new_channel_entry.delete(0, tk.END)
+        self.new_channel_entry.delete(0, tk.END)
+        self.update_gui()
     
     def create_voice_channel(self):
         new_channel_name = self.new_voice_channel_entry.get()
@@ -183,7 +174,8 @@ class Graphic:
         #delete all messages
         self.chat_text.config(state="normal")
         self.chat_text.delete(1.0, tk.END)
-        self.chat_text.config(state="disabled")     
+        self.chat_text.config(state="disabled")
+        print (channel_name)    
         return channel_name
     
     def logout(self):
