@@ -88,8 +88,8 @@ def handle_create_channel():
     if new_channel_name:
         send_message(f"<COMMAND>create_channel | {new_channel_name}")
         handle_switch_channel(new_channel_name)
-        app.salons_textuels_menu.configure(command=handle_switch_channel)  # Update command
-        app.salons_textuels_menu.set(new_channel_name)
+        app.text_rooms_menu.configure(command=handle_switch_channel)  # Update command
+        app.text_rooms_menu.set(new_channel_name)
 
 
 

@@ -74,15 +74,14 @@ class Graphic:
         self.text_rooms = self.get_channels()
         self.voice_rooms = self.get_vocal_channel()
 
-        self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
-        self.salons_textuels_menu.set("Salons textuels")
-        self.salons_textuels_menu.place(relx=0.025, rely=0.15)
+        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
+        self.text_rooms_menu.set("Salons textuels")
+        self.text_rooms_menu.place(relx=0.025, rely=0.15)
 
         my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.voice_rooms)
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
-        self.text_rooms_menu = my_option
         self.voice_rooms_menu = my_option2
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
