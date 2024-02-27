@@ -131,6 +131,12 @@ class Graphic:
             return True
         else:
             return False
+        
+    def get_channel_users(self, channel_name):
+        users = self.db_instance.fetch("SELECT users FROM channel WHERE name = %s", (channel_name,))
+        users = users[0][0]
+        print (users)
+        return users
 
     def send_message(self):
         message = self.message_entry.get()
@@ -192,11 +198,16 @@ class Graphic:
 
     def select_channel(self, channel_name):
         #delete all messages
-        self.chat_text.config(state="normal")
-        self.chat_text.delete(1.0, tk.END)
-        self.chat_text.config(state="disabled")
-        print (channel_name)    
-        return channel_name
+        users = self.get_channel_users(channel_name)
+        if self.email in users:
+            self.chat_text.config(state="normal")
+            self.chat_text.delete(1.0, tk.END)
+            self.chat_text.config(state="disabled")
+            print (channel_name)    
+            return channel_name
+        else:
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour accéder à ce salon.")
+            return None
     
     def logout(self):
             self.root.destroy()

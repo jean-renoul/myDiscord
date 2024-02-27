@@ -80,8 +80,9 @@ def handle_send_button():
 
 def handle_switch_channel(channel_name):
     channel_name = app.select_channel(channel_name)
-    client.joinChannel(channel_name)
-    send_message("<COMMAND>switch")
+    if channel_name != None:
+        client.joinChannel(channel_name)
+        send_message("<COMMAND>switch")
 
 def handle_create_channel():
     new_channel_name = app.create_channel()
