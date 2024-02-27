@@ -71,19 +71,19 @@ class Graphic:
 
 
 
-        self.Salons_textuels = self.get_channels()
-        self.Salons_vocaux = self.get_vocal_channel()
+        self.text_rooms = self.get_channels()
+        self.voice_rooms = self.get_vocal_channel()
 
-        self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
+        self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.salons_textuels_menu.set("Salons textuels")
         self.salons_textuels_menu.place(relx=0.025, rely=0.15)
 
-        my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.Salons_vocaux)
+        my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.voice_rooms)
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
-
-        self.salons_vocaux_menu = my_option2
+        self.text_rooms_menu = my_option
+        self.voice_rooms_menu = my_option2
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
         self.new_channel_entry.place(relx=0.025, rely=0.3)
@@ -104,15 +104,15 @@ class Graphic:
         self.root.update()  
 
     def get_channels(self):
-        salons_textuels = self.db_instance.fetch("SELECT name FROM channel")
-        salons_textuels = [salon[0] for salon in salons_textuels]
-        return salons_textuels
+        text_rooms = self.db_instance.fetch("SELECT name FROM channel")
+        text_rooms = [salon[0] for salon in text_rooms]
+        return text_rooms
     
 
     def get_vocal_channel(self):
-        salons_vocaux = self.db_instance.fetch("SELECT name FROM vocal_channel")
-        salons_vocaux = [salon[0] for salon in salons_vocaux]
-        return salons_vocaux
+        voice_rooms = self.db_instance.fetch("SELECT name FROM vocal_channel")
+        voice_rooms = [salon[0] for salon in voice_rooms]
+        return voice_rooms
     
     def get_admin(self):
         admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.email,))
@@ -164,12 +164,12 @@ class Graphic:
 
     def update_option_menu(self):
         # Clear the existing OptionMenu
-        self.salons_textuels_menu.destroy()
+        self.text_rooms_menu.destroy()
         self.Salons_textuels = self.get_channels()
         # Create a new OptionMenu with the updated list of channels
-        self.salons_textuels_menu = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
-        self.salons_textuels_menu.set("Salons textuels")
-        self.salons_textuels_menu.place(relx=0.025, rely=0.15)
+        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
+        self.text_rooms_menu.set("Salons textuels")
+        self.text_rooms_menu.place(relx=0.025, rely=0.15)
         self.new_channel_entry.delete(0, tk.END)
         self.update_gui()
     
@@ -177,7 +177,7 @@ class Graphic:
         new_channel_name = self.new_voice_channel_entry.get()
         if new_channel_name:
             print(f"Salon vocal créé : {new_channel_name}")
-            self.salons_vocaux_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
+            self.voice_rooms_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
             self.new_voice_channel_entry.delete(0, tk.END)
 
     def select_channel(self, channel_name):

@@ -96,7 +96,7 @@ def handle_create_channel():
 
 # Set the "Send" button command to the handle_send_button function
 app.send_button.config(command=handle_send_button)
-app.salons_textuels_menu.configure(command=handle_switch_channel)
+app.text_rooms_menu.configure(command=handle_switch_channel)
 app.create_channel_button.config(command=handle_create_channel)
 
 app.show()
