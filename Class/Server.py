@@ -31,9 +31,14 @@ class Server:
                 channelName = channelName.strip()
                 messageDate = messageDate.strip()
 
-                if messageContent == "switch":
+                if "<COMMAND>switch" in messageContent:
+                    channelName = channelName.strip()
                     self.joinChannel(channelName, clientSocket)
                     self.getPreviousMessages(channelName, clientSocket)
+                elif "<COMMAND>create_channel | " in messageContent:
+                    newChannelName = messageContent.split('| ')[1].strip()
+                    print(f"New channel created: {newChannelName}")
+                    self.channels[newChannelName] = Channel(newChannelName)
                 else:
                     self.sendToChannel(channelName, message)
                     self.Db.executeQuery("INSERT INTO message (texte, auteur, heure, channel) VALUES (%s, %s, %s, %s)", (messageContent, clientFirstName + " " + clientLastName, messageDate, channelName))
@@ -67,7 +72,6 @@ class Server:
     def getPreviousMessages(self, channelName, clientSocket):
         previous_messages = self.Db.fetch("SELECT * FROM message WHERE channel = %s", (channelName,))
         for message in previous_messages:
-            print (message)
             message = f'{message[3]}: {message[2]}: {message[1]}\n'
             clientSocket.send(message.encode())
 
