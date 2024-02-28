@@ -49,7 +49,7 @@ class Server:
                         title='Vous avez un nouveau message !',
                         message=message,
                         app_icon=None,  # Ajoutez le chemin de l'icône si vous en avez une
-                        timeout=10,  # Durée d'affichage de la notification en secondes
+                        timeout=5,  # Durée d'affichage de la notification en secondes
                     )
 
     def start(self):
