@@ -71,6 +71,7 @@ class Graphic:
 
         self.text_rooms = self.get_channels()
         self.voice_rooms = self.get_vocal_channel()
+        self.user_name = self.get_user()
 
         self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
@@ -80,7 +81,12 @@ class Graphic:
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
+        self.user_names = customtkinter.CTkOptionMenu(self.root, values=self.user_name)
+        self.user_names.set("Ajouter Utilisateur")
+        self.user_names.place(relx=0.8, rely=0.3)
+
         self.voice_rooms_menu = my_option2
+        self.user_name_menu = self.user_names
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
         self.new_channel_entry.place(relx=0.025, rely=0.3)
@@ -110,6 +116,11 @@ class Graphic:
         voice_rooms = self.db_instance.fetch("SELECT name FROM vocal_channel")
         voice_rooms = [salon[0] for salon in voice_rooms]
         return voice_rooms
+    
+    def get_user(self):
+        user_name = self.db_instance.fetch("SELECT prenom FROM users")
+        user_name = [name[0] for name in user_name]
+        return user_name
     
     def get_admin(self):
         admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.email,))
@@ -155,9 +166,9 @@ class Graphic:
     def update_option_menu(self):
         # Clear the existing OptionMenu
         self.text_rooms_menu.destroy()
-        self.Salons_textuels = self.get_channels()
+        self.text_rooms = self.get_channels()
         # Create a new OptionMenu with the updated list of channels
-        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.Salons_textuels, command=self.select_channel)
+        self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
         self.text_rooms_menu.place(relx=0.025, rely=0.15)
         self.new_channel_entry.delete(0, tk.END)
