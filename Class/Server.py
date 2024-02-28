@@ -1,4 +1,3 @@
-from plyer import notification
 from Channel import Channel
 import socket
 import threading
@@ -78,7 +77,7 @@ class Server:
             clientSocket.send(message.encode())
 
     def sendToChannel(self, channelName, message):
-        toSend = f"{message}\n"
+        toSend = f"{message}"
         self.channels[channelName].sendMessage(toSend)
         notification_message = f"<COMMAND>notification | {channelName} | {message}"
         for channel_name, channel_object in self.channels.items():
