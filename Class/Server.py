@@ -1,3 +1,4 @@
+from plyer import notification
 from Channel import Channel
 import socket
 import threading
@@ -42,7 +43,14 @@ class Server:
                 else:
                     self.sendToChannel(channelName, message)
                     self.Db.executeQuery("INSERT INTO message (texte, auteur, heure, channel) VALUES (%s, %s, %s, %s)", (messageContent, clientFirstName + " " + clientLastName, messageDate, channelName))
-
+                    
+                    # Affichage de la notification
+                    notification.notify(
+                        title='Vous avez un nouveau message !',
+                        message=message,
+                        app_icon=None,  # Ajoutez le chemin de l'icône si vous en avez une
+                        timeout=5,  # Durée d'affichage de la notification en secondes
+                    )
 
     def start(self):
         self.getChannels()
@@ -75,7 +83,6 @@ class Server:
             message = f'{message[3]}: {message[2]}: {message[1]}\n'
             clientSocket.send(message.encode())
 
-
     def sendToChannel(self, channelName, message):
         toSend = f"{message}\n"
         self.channels[channelName].sendMessage(toSend)
@@ -83,4 +90,3 @@ class Server:
 if __name__ == "__main__":
     server1 = Server()
     server1.start()
-

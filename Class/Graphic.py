@@ -16,8 +16,6 @@ class Graphic:
         self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
         print (self.user.channel)
 
-
-
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
         self.image_haut_milieu = tk.PhotoImage(file="assets/images/Titre.png")
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
@@ -142,22 +140,15 @@ class Graphic:
         message = self.message_entry.get()
         if message:
             self.chat_text.config(state="normal")
-
-            # Ajout du message à la zone de chat
             self.message_entry.delete(0, tk.END)
-            self.chat_text.config(state="disabled")
-
-            # Désactiver la zone de chat à nouveau
             self.chat_text.config(state="disabled")
             return message
 
-
     def receive_message(self, message):
-        # Activer la zone de chat pour ajouter le message
         self.chat_text.config(state="normal")
 
         # Ajout du message à la zone de chat
-        self.chat_text.insert(tk.END, message)
+        self.chat_text.insert(tk.END, message + "\n")
 
         # Désactiver la zone de chat à nouveau
         self.chat_text.config(state="disabled")
@@ -244,7 +235,6 @@ class Graphic:
             os.system('python client.py')
     def show(self):
         self.root.mainloop()
-
 
 # Instanciation de la classe et appel de la méthode pour afficher la fenêtre
 if __name__ == "__main__":
