@@ -53,6 +53,10 @@ class Register:
         else:
             params = (firstname, lastname, email, password)
             self.db_instance.executeQuery("INSERT INTO users (prenom, nom, email, mdp) VALUES (%s, %s, %s, %s)", params)
+            users = self.db_instance.fetch("SELECT users FROM channel WHERE name = %s", ("general",))
+            users = users[0][0]
+            users = users + email + ","
+            self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (users,"general"))
             self.userInfo = [firstname, lastname, email, password]
             messagebox.showinfo("Succès", "Inscription réussie")
             self.windows.destroy()

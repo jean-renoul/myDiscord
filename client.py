@@ -41,11 +41,11 @@ if user_info == []:
     app.windows.mainloop()
     user_info = app.userInfo
     client = User(user_info[0], user_info[1], user_info[2], user_info[3])
-    app = Graphic(user_info[2])
+    app = Graphic(client)
 
 else:
     client = User(user_info[2], user_info[1], user_info[3], user_info[4])
-    app = Graphic(user_info[3])
+    app = Graphic(client)
 
 
 client.clientSocket = clientSocket

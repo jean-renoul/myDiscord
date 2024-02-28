@@ -7,13 +7,14 @@ import customtkinter
 from Class.Db import *
 
 class Graphic:
-    def __init__(self, email):
-        self.email = email
+    def __init__(self, user):
+        self.user = user
         self.root = tk.Tk()
         self.root.title("Discord")
         self.root.geometry("900x540")
         self.root.resizable(False, False)
         self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+        print (self.user.channel)
 
 
 
@@ -83,12 +84,12 @@ class Graphic:
         my_option2.set("Salons vocaux")
         my_option2.place(relx=0.025, rely=0.5)
 
-        self.user_names = customtkinter.CTkOptionMenu(self.root, values=self.user_name)
-        self.user_names.set("Ajouter Utilisateur")
-        self.user_names.place(relx=0.8, rely=0.3)
+        self.add_user = customtkinter.CTkOptionMenu(self.root, values=self.user_name, command=self.add_user)
+        self.add_user.set("Ajouter Utilisateur")
+        self.add_user.place(relx=0.8, rely=0.3)
 
         self.voice_rooms_menu = my_option2
-        self.user_name_menu = self.user_names
+        self.add_user_menu = self.add_user
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
         self.new_channel_entry.place(relx=0.025, rely=0.3)
@@ -125,7 +126,7 @@ class Graphic:
         return user_name
     
     def get_admin(self):
-        admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.email,))
+        admin = self.db_instance.fetch("SELECT admin FROM users WHERE email = %s", (self.user.email,))
         admin = admin[0][0]
         if admin == "True":
             return True
@@ -135,7 +136,6 @@ class Graphic:
     def get_channel_users(self, channel_name):
         users = self.db_instance.fetch("SELECT users FROM channel WHERE name = %s", (channel_name,))
         users = users[0][0]
-        print (users)
         return users
 
     def send_message(self):
@@ -199,7 +199,7 @@ class Graphic:
     def select_channel(self, channel_name):
         #delete all messages
         users = self.get_channel_users(channel_name)
-        if self.email in users:
+        if self.user.email in users:
             self.chat_text.config(state="normal")
             self.chat_text.delete(1.0, tk.END)
             self.chat_text.config(state="disabled")
@@ -208,6 +208,36 @@ class Graphic:
         else:
             messagebox.showerror("Erreur", "Vous n'avez pas les droits pour accéder à ce salon.")
             return None
+        
+    def add_user(self, user_name):
+        authorization = self.get_admin()
+        if authorization == False and user_name:
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour ajouter un utilisateur.")
+        elif authorization == True and user_name:
+            email_user = self.db_instance.fetch("SELECT email FROM users WHERE prenom = %s", (user_name,))
+            email_user = email_user[0][0]
+            print (email_user)
+            list_users = self.get_channel_users(self.user.channel)
+            print (list_users)
+            new_list = (f"{list_users},{email_user},")
+            print (new_list)
+            self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (new_list, self.user.channel))
+
+    def remove_user(self, user_name):
+        authorization = self.get_admin()
+        if authorization == False and user_name:
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour supprimer un utilisateur.")
+        elif authorization == True and user_name:
+            email_user = self.db_instance.fetch("SELECT email FROM users WHERE prenom = %s", (user_name,))
+            email_user = email_user[0][0]
+            print (email_user)
+            list_users = self.get_channel_users(self.user.channel)
+            print (list_users)
+            new_list = list_users.replace(f",{email_user},", "")
+            print (new_list)
+            self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (new_list, self.user.channel))
+
+
     
     def logout(self):
             self.root.destroy()
