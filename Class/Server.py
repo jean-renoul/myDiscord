@@ -44,13 +44,7 @@ class Server:
                     self.sendToChannel(channelName, message)
                     self.Db.executeQuery("INSERT INTO message (texte, auteur, heure, channel) VALUES (%s, %s, %s, %s)", (messageContent, clientFirstName + " " + clientLastName, messageDate, channelName))
                     
-                    # Affichage de la notification
-                    notification.notify(
-                        title='Vous avez un nouveau message !',
-                        message=message,
-                        app_icon=None,  # Ajoutez le chemin de l'icône si vous en avez une
-                        timeout=5,  # Durée d'affichage de la notification en secondes
-                    )
+
 
     def start(self):
         self.getChannels()
@@ -86,6 +80,10 @@ class Server:
     def sendToChannel(self, channelName, message):
         toSend = f"{message}\n"
         self.channels[channelName].sendMessage(toSend)
+        notification_message = f"<COMMAND>notification | {channelName} | {message}"
+        for channel_name, channel_object in self.channels.items():
+            if channel_name != channelName:
+                channel_object.sendMessage(notification_message)
 
 if __name__ == "__main__":
     server1 = Server()

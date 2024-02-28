@@ -6,6 +6,7 @@ from Class.Login import Login
 from Class.Register import Register
 from Class.Graphic import Graphic
 from Class.Db import Db
+from plyer import notification
 
 
 db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
@@ -54,7 +55,16 @@ def listen_for_messages():
     try:
         while True:
             message = clientSocket.recv(1024).decode()
-            app.receive_message(message)
+            if "<COMMAND>notification" in message:
+                message_parts = message.split('|')
+                
+                notification.notify(
+                    title = message_parts[1].strip(),
+                    message = message_parts[2].strip(),
+                    timeout = 10
+                )
+            else:
+                app.receive_message(message)
     except Exception as e:
         print(f"Error occurred while listening for messages: {e}")
 
