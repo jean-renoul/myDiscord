@@ -2,6 +2,7 @@ from Channel import Channel
 import socket
 import threading
 from Db import Db
+import pyaudio
 
 class Server:
     def __init__(self):

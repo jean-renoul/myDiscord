@@ -4,13 +4,14 @@ from tkinter import messagebox
 import os
 from PIL import Image, ImageTk
 import customtkinter
-from Class.Db import *
+from Db import *
+import threading
 
 class Graphic:
     def __init__(self, email):
         self.email = email
         self.root = tk.Tk()
-        self.root.title("Discord")
+        self.root.title("ZOB")
         self.root.geometry("900x540")
         self.root.resizable(False, False)
         self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
@@ -74,6 +75,7 @@ class Graphic:
         self.text_rooms = self.get_channels()
         self.voice_rooms = self.get_vocal_channel()
         self.user_name = self.get_user()
+        self.recording = False
 
         self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
@@ -86,6 +88,13 @@ class Graphic:
         self.user_names = customtkinter.CTkOptionMenu(self.root, values=self.user_name)
         self.user_names.set("Ajouter Utilisateur")
         self.user_names.place(relx=0.8, rely=0.3)
+
+        # Ajouter le bouton "Quitter le vocal"
+        quit_voice_button = Button(self.root, text="Quitter le vocal", bg="#ff0000", fg="white", font=("Segoe UI", 8), command=self.quit_voice_channel)
+        quit_voice_button.place(relx=0.025, rely=0.45)
+
+        join_voice_button = Button(self.root, text="Rejoindre le vocal", bg="#008000", fg="white", font=("Segoe UI", 8), command=self.join_voice_channel)
+        join_voice_button.place(relx=0.13, rely=0.45)
 
         self.voice_rooms_menu = my_option2
         self.user_name_menu = self.user_names
@@ -170,7 +179,36 @@ class Graphic:
             self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))            
             self.update_option_menu()        
         return new_channel_name
+    
 
+    
+    def join_voice_channel(self):
+        try:
+            messagebox.showinfo("Info", "Vous avez rejoint le salon vocal.")   
+            self.recording = True
+            # Créer une instance de Vocal
+            from Vocal import Vocal
+            self.voice = Vocal ()
+            # Démarrer le thread d'enregistrement vocal
+            self.voice_thread = threading.Thread(target=self.start_voice_message_thread)
+            self.voice_thread.start() 
+        except Exception as e:
+            print(f"Erreur : {e}")
+
+    def quit_voice_channel(self):
+        messagebox.showinfo("Info", "Vous avez quitté le salon vocal.")
+        self.recording = False  # Mettre à jour l'état de l'enregistrement
+        # Appeler la méthode stop de l'instance de Vocal pour arrêter l'enregistrement
+        if self.voice:
+            self.voice.stop()
+        # Si le thread d'enregistrement vocal est en cours, attendre qu'il se termine
+        if self.voice_thread is not None:
+            self.voice_thread.join()
+
+    def start_voice_message_thread(self):
+        if self.recording:  # Vérifier que l'enregistrement est toujours actif
+            self.voice.start()
+            self.recording = False  # Mettre à jour l'état de l'enregistrement lorsque celui-ci est terminé    
 
     def update_option_menu(self):
         # Clear the existing OptionMenu

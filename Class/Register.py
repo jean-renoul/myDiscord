@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-from Class.Db import *
+from Db import *
 
 class Register:
     def __init__(self):

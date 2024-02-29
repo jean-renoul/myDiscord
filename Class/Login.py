@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
-from Class.Db import *
+from Db import *
 import os
 
 class Login:
