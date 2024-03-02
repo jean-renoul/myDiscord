@@ -83,7 +83,7 @@ class Graphic:
         my_option2.place(relx=0.025, rely=0.5)
 
         self.add_user = customtkinter.CTkOptionMenu(self.root, values=self.user_name, command=self.add_user)
-        self.add_user.set("Ajouter Utilisateur")
+        self.add_user.set("Ajouter Utilisateur au salon")
         self.add_user.place(relx=0.8, rely=0.3)
 
         self.voice_rooms_menu = my_option2
@@ -100,6 +100,13 @@ class Graphic:
 
         self.create_voice_channel_button = Button(self.root, text="Créer un salon vocal", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_voice_channel)
         self.create_voice_channel_button.place(relx=0.025, rely=0.7)
+
+        self.quit_voice_button = Button(self.root, text="Quitter le vocal", bg="#ff0000", fg="white", font=("Segoe UI", 8))
+        self.quit_voice_button.place(relx=0.025, rely=0.45)
+
+        self.join_voice_button = Button(self.root, text="Rejoindre le vocal", bg="#008000", fg="white", font=("Segoe UI", 8))
+        self.join_voice_button.place(relx=0.13, rely=0.45)
+
         self.update_gui()
         
 
@@ -164,8 +171,13 @@ class Graphic:
             messagebox.showerror("Erreur", "Vous n'avez pas les droits pour créer un salon.")
         elif authorization == True and new_channel_name:
             messagebox.showinfo("Succès", f"Salon textuel créé : {new_channel_name}")
-            self.db_instance.executeQuery("INSERT INTO channel (name) VALUES (%s)", (new_channel_name,))            
-            self.update_option_menu()        
+            admins = self.db_instance.fetch("SELECT email FROM users WHERE admin = %s", ("True",))
+            self.db_instance.executeQuery("INSERT INTO channel (name,users) VALUES (%s,%s)", (new_channel_name,f"{admins},"))            
+            print (admins)
+            #for admin in admins:
+                #print (admin[0])
+                #self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (f",{admin[0]},", new_channel_name))            
+            self.update_option_menu()
         return new_channel_name
 
 
@@ -178,6 +190,12 @@ class Graphic:
         self.text_rooms_menu.set("Salons textuels")
         self.text_rooms_menu.place(relx=0.025, rely=0.15)
         self.new_channel_entry.delete(0, tk.END)
+
+        self.add_user_menu.destroy()
+        self.user_name = self.get_user()
+        self.add_user_menu = customtkinter.CTkOptionMenu(self.root, values=self.user_name, command=self.add_user)
+        self.add_user_menu.set("Ajouter Utilisateur au salon")
+        self.add_user_menu.place(relx=0.8, rely=0.3)
         self.update_gui()
     
     def create_voice_channel(self):
@@ -203,7 +221,7 @@ class Graphic:
     def add_user(self, user_name):
         authorization = self.get_admin()
         if authorization == False and user_name:
-            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour ajouter un utilisateur.")
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour ajouter un utilisateur au salon.")
         elif authorization == True and user_name:
             email_user = self.db_instance.fetch("SELECT email FROM users WHERE prenom = %s", (user_name,))
             email_user = email_user[0][0]
@@ -217,7 +235,7 @@ class Graphic:
     def remove_user(self, user_name):
         authorization = self.get_admin()
         if authorization == False and user_name:
-            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour supprimer un utilisateur.")
+            messagebox.showerror("Erreur", "Vous n'avez pas les droits pour supprimer un utilisateur du salon.")
         elif authorization == True and user_name:
             email_user = self.db_instance.fetch("SELECT email FROM users WHERE prenom = %s", (user_name,))
             email_user = email_user[0][0]
@@ -227,7 +245,6 @@ class Graphic:
             new_list = list_users.replace(f",{email_user},", "")
             print (new_list)
             self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (new_list, self.user.channel))
-
 
     
     def logout(self):
