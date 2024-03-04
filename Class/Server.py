@@ -11,7 +11,8 @@ class Server:
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.serverSocket.bind(('127.0.0.1', 8080))
         self.serverSocket.listen(5)
-        self.Db = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')      
+        self.Db = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+        self.separator_token = "<SEP>"    
 
     def listenForClients(self, clientSocket):
         while True:
@@ -28,15 +29,15 @@ class Server:
                 self.clientSockets.remove(clientSocket)
                 break
             else:
-                message = message.replace ('<SEP>', ': ')
+                message = message.replace (self.separator_token, ': ')
                 channelName, messageDate, clientFirstName, clientLastName,  messageContent= message.split(': ')
                 message = f"{messageDate}: {clientFirstName} {clientLastName}: {messageContent}"
 
                 if "<COMMAND>switch" in messageContent:
                     self.joinChannel(channelName, clientSocket)
                     self.getPreviousMessages(channelName, clientSocket)
-                elif "<COMMAND>create_channel | " in messageContent:
-                    newChannelName = messageContent.split('| ')[1].strip()
+                elif "<COMMAND>create_channel" in messageContent:
+                    newChannelName = messageContent.split("|")[1]
                     print(f"New channel created: {newChannelName}")
                     self.channels[newChannelName] = Channel(newChannelName)
                     for clientSocket in self.clientSockets:
@@ -84,7 +85,7 @@ class Server:
     def sendToChannel(self, channelName, message):
         toSend = f"{message}"
         self.channels[channelName].sendMessage(toSend)
-        notification_message = f"<COMMAND>notification | {channelName} | {message}"
+        notification_message = f"<COMMAND>notification|{channelName}"
         for channel_name, channel_object in self.channels.items():
             if channel_name != channelName:
                 channel_object.sendMessage(notification_message)

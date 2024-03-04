@@ -73,8 +73,8 @@ def listen_for_messages():
             if "<COMMAND>notification" in message:
                 message_parts = message.split('|')
                 notification.notify(
-                    title=message_parts[1].strip(),
-                    message=message_parts[2].strip(),
+                    title=message_parts[1],
+                    message="Nouveau message dans le salon " + message_parts[1],
                     timeout=10
                 )
             elif "<COMMAND>refresh" in message:
@@ -90,7 +90,6 @@ def listen_for_messages():
 def send_message(message):
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     to_send = f"{client.channel}{separator_token}{date_now}{separator_token}{client.firstname}{separator_token}{client.lastname}{separator_token}{message}"
-    print(to_send)
     clientSocket.send(to_send.encode())
 
 # Function to handle "Send" button click event
@@ -109,7 +108,7 @@ def handle_switch_channel(channel_name):
 def handle_create_channel():
     new_channel_name = app.create_channel()
     if new_channel_name:
-        send_message(f"<COMMAND>create_channel | {new_channel_name}")
+        send_message(f"<COMMAND>create_channel|{new_channel_name}")
         handle_switch_channel(new_channel_name)
         app.text_rooms_menu.configure(command=handle_switch_channel)  # Update command
         app.text_rooms_menu.set(new_channel_name)

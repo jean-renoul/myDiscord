@@ -14,7 +14,6 @@ class Graphic:
         self.root.geometry("900x540")
         self.root.resizable(False, False)
         self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
-        print (self.user.channel)
 
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
         self.image_haut_milieu = tk.PhotoImage(file="assets/images/Titre.png")
@@ -172,11 +171,8 @@ class Graphic:
         elif authorization == True and new_channel_name:
             messagebox.showinfo("Succès", f"Salon textuel créé : {new_channel_name}")
             admins = self.db_instance.fetch("SELECT email FROM users WHERE admin = %s", ("True",))
-            self.db_instance.executeQuery("INSERT INTO channel (name,users) VALUES (%s,%s)", (new_channel_name,f"{admins},"))            
-            print (admins)
-            #for admin in admins:
-                #print (admin[0])
-                #self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (f",{admin[0]},", new_channel_name))            
+            emails = [admin[0] for admin in admins]
+            self.db_instance.executeQuery("INSERT INTO channel (name,users) VALUES (%s,%s)", (new_channel_name,f"{emails},"))          
             self.update_option_menu()
         return new_channel_name
 
