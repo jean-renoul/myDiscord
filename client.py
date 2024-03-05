@@ -5,11 +5,9 @@ from Class.User import User
 from Class.Login import Login
 from Class.Register import Register
 from Class.Graphic import Graphic
-from Class.Db import Db
 from plyer import notification
 import pyaudio
 
-db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
 # Server's IP address and port
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 8080
