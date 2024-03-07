@@ -25,19 +25,20 @@ class VocalServer:
 
     # Fonction pour gérer les clients
     def handle_client(self, client_socket):
-        try:
-            while True:
-                data = client_socket.recv(1024)  # Reçoit les données du client
-                if not data:
-                    break
-                # Envoie les données à tous les autres clients
-                for client in self.clientSockets:
-                    if client != client_socket:
-                        client.sendall(data)
-        except Exception as e:  # En cas d'erreur
-            print(f"Erreur : {e}")  # Affiche l'erreur
-        finally:
-            client_socket.close()  # Ferme le socket client
+        if len(self.clientSockets) > 1:  # Si le nombre de clients est supérieur à 1
+            try:
+                while True:
+                    data = client_socket.recv(1024)  # Reçoit les données du client
+                    if not data:
+                        break
+                    # Envoie les données à tous les autres clients
+                    for client in self.clientSockets:
+                        if client != client_socket:
+                            client.sendall(data)
+            except Exception as e:  # En cas d'erreur
+                print(f"Erreur : {e}")  # Affiche l'erreur
+            finally:
+                client_socket.close()  # Ferme le socket client
 
     # Fonction pour gérer les connexions clientes
     def accept_clients(self):
@@ -55,6 +56,7 @@ class VocalServer:
             self.accept_clients()  # Lance la gestion des connexions clientes
         finally:
             self.server_socket.close()  # Ferme le socket serveur en cas d'erreur ou lorsque la boucle se termine
+
 
 if __name__ == "__main__":
     server1 = VocalServer()  # Crée une instance de VocalServer

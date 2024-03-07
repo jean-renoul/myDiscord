@@ -176,9 +176,3 @@ if new_user == True:
 
 # Affiche l'interface graphique
 app.show()
-
-
-
-# Fermeture des sockets
-clientSocket.close()
-vocalSocket.close()
