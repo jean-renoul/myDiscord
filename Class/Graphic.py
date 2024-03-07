@@ -1,37 +1,44 @@
 import tkinter as tk
-from tkinter import *
-from tkinter import messagebox
-import os
-from PIL import Image, ImageTk
-import customtkinter
-from Class.Db import *
+from tkinter import * # Importation de tous les éléments de tkinter
+from tkinter import messagebox  # Importation spécifique de messagebo
+import os 
+from PIL import Image, ImageTk # Importation de classes spécifiques depuis PIL
+import customtkinter # Importation de votre propre module customtkinter
+from Class.Db import *  # Importation de toutes les classes et fonctions de Db module
 
 class Graphic:
     def __init__(self, user):
-        self.user = user
-        self.root = tk.Tk()
-        self.root.title("Discord")
-        self.root.geometry("900x540")
-        self.root.resizable(False, False)
-        self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord')
+        # Initialisation de la classe
+        self.user = user # Assignation de l'utilisateur actuel
+        self.root = tk.Tk() # Création de la fenêtre principale tkinter
+        self.root.title("Discord") # Titre de la fenêtre
+        self.root.geometry("900x540") # Taille de la fenêtre
+        self.root.resizable(False, False) # Empêcher le redimensionnement de la fenêtre
+        self.db_instance = Db('82.165.185.52', 'jean-renoul', 'patesaup0ulet', 'jean-renoul_discord') # Connexion à la base de données
 
+        # Canvas pour la mise en page
         self.canvas = tk.Canvas(self.root, width=900, height=540, bg="#2c2f33")
         self.image_haut_milieu = tk.PhotoImage(file="assets/images/Titre.png")
         self.canvas.create_image(450, 0, anchor=tk.N, image=self.image_haut_milieu)
         self.canvas.pack()
 
+        # Bouton pour se déconnecter
         self.button_logout = Button(self.canvas, text="Se déconnecter", width=15, borderwidth=0, bg="#7289da", fg="white", font=("Segoe UI", 15), command=self.logout)
         self.canvas.create_window(25, 450, anchor=tk.NW, window=self.button_logout)
 
+        # Zone de texte pour le chat
         self.chat_text = Text(self.canvas, bg="grey", fg="black", font=("Segoe UI", 12), bd=0, width=50, height=18, state="disabled")
         self.chat_text_window = self.canvas.create_window(450, 270, anchor=tk.CENTER, window=self.chat_text)
 
+        # Champ de saisie pour les messages
         self.message_entry = Entry(self.canvas, bg="grey", fg="black", font=("Segoe UI", 12), bd=0, width=50)
         self.message_entry_window = self.canvas.create_window(450, 510, anchor=tk.CENTER, window=self.message_entry)
 
+        # Bouton pour envoyer les messages
         self.send_button = Button(self.canvas, text="Envoyer", bg="#7289da", fg="white", borderwidth=0, font=("Segoe UI", 12), command=self.send_message)
         self.send_button_window = self.canvas.create_window(720, 510, anchor=tk.CENTER, window=self.send_button)
 
+        # Liste des données des emojis
         emoji_data = [('assets/emojis/u0001f44a.png', '\U0001F44A'), ('assets/emojis/u0001f44c.png', '\U0001F44C'), ('assets/emojis/u0001f44d.png', '\U0001F44D'),
                       ('assets/emojis/u0001f495.png', '\U0001F495'), ('assets/emojis/u0001f496.png', '\U0001F496'), ('assets/emojis/u0001f4a6.png', '\U0001F4A6'),
                       ('assets/emojis/u0001f4a9.png', '\U0001F4A9'), ('assets/emojis/u0001f4af.png', '\U0001F4AF'), ('assets/emojis/u0001f595.png', '\U0001F595'),
@@ -44,8 +51,10 @@ class Graphic:
                       ('assets/emojis/u0001f637.png', '\U0001F637'), ('assets/emojis/u0001f642.png', '\U0001F642'), ('assets/emojis/u0001f64f.png', '\U0001F64F'),
                       ('assets/emojis/u0001f920.png', '\U0001F920'), ('assets/emojis/u0001f923.png', '\U0001F923'), ('assets/emojis/u0001f928.png', '\U0001F928')]
 
-        emoji_x_pos = 720
-        emoji_y_pos = 310
+        emoji_x_pos = 720 # Position x de l'emoji
+        emoji_y_pos = 310 # Position y de l'emoji
+
+        # Création des emojis dans la fenêtre
         for Emoji in emoji_data:
             emojis = Image.open(Emoji[0])
             emojis = emojis.resize((20, 20))
@@ -57,12 +66,13 @@ class Graphic:
             emoji_label.place(x=emoji_x_pos, y=emoji_y_pos)
             emoji_label.bind('<Button-1>', lambda x: self.insert_emoji(x))
 
-            emoji_x_pos += 25
+            emoji_x_pos += 25   # Espacement horizontatl entre les emojis
             cur_index = emoji_data.index(Emoji)
             if (cur_index + 1) % 6 == 0:
-                emoji_y_pos += 25
+                emoji_y_pos += 25 # Espacement vertical entre les emojis
                 emoji_x_pos = 720
 
+        # Scrollbar pour la zone de chat
         self.scrollbar = Scrollbar(self.canvas, orient="vertical", command=self.chat_text.yview)
         self.scrollbar_window = self.canvas.create_window(694, 270, anchor=tk.E, window=self.scrollbar, height=380)
         self.chat_text.config(yscrollcommand=self.scrollbar.set)
@@ -108,7 +118,7 @@ class Graphic:
 
         self.update_gui()
         
-
+    # Méthodes pour gérer l'interface utilisateur
     def update_gui(self):
         self.root.update_idletasks()
         self.root.update()  
@@ -142,6 +152,7 @@ class Graphic:
         users = users[0][0]
         return users
 
+    #Fontion pour envoyer un message dans le chat
     def send_message(self):
         message = self.message_entry.get()
         if message:
@@ -150,6 +161,7 @@ class Graphic:
             self.chat_text.config(state="disabled")
             return message
 
+    #Fonction pour recevoir un message dans le chat
     def receive_message(self, message):
         self.chat_text.config(state="normal")
 
@@ -159,10 +171,12 @@ class Graphic:
         # Désactiver la zone de chat à nouveau
         self.chat_text.config(state="disabled")
 
+    #Fonction pour insérer un emoji dans le champ de saisie
     def insert_emoji(self, event):
         emoji_unicode = event.widget['text']
         self.message_entry.insert(tk.END, emoji_unicode)
     
+    #Fonction pour créer un salon textuel
     def create_channel(self):
         new_channel_name = self.new_channel_entry.get()
         authorization = self.get_admin()
@@ -177,11 +191,12 @@ class Graphic:
         return new_channel_name
 
 
+    #Fonction pour mettre à jour le menu des salons textuels
     def update_option_menu(self):
-        # Clear the existing OptionMenu
+        # Destruction de l'OptionMenu actuel
         self.text_rooms_menu.destroy()
         self.text_rooms = self.get_channels()
-        # Create a new OptionMenu with the updated list of channels
+        # Creation d'un nouvel OptionMenu
         self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
         self.text_rooms_menu.place(relx=0.025, rely=0.15)
@@ -194,6 +209,7 @@ class Graphic:
         self.add_user_menu.place(relx=0.8, rely=0.3)
         self.update_gui()
     
+    #Fonction pour créer un salon vocal
     def create_voice_channel(self):
         new_channel_name = self.new_voice_channel_entry.get()
         if new_channel_name:
@@ -201,6 +217,7 @@ class Graphic:
             self.voice_rooms_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
             self.new_voice_channel_entry.delete(0, tk.END)
 
+    #Fonction pour sélectionner un salon textuel
     def select_channel(self, channel_name):
         #delete all messages
         users = self.get_channel_users(channel_name)
@@ -213,7 +230,8 @@ class Graphic:
         else:
             messagebox.showerror("Erreur", "Vous n'avez pas les droits pour accéder à ce salon.")
             return None
-        
+
+    #Fonction pour ajouter un utilisateur à un salon    
     def add_user(self, user_name):
         authorization = self.get_admin()
         if authorization == False and user_name:
@@ -228,6 +246,7 @@ class Graphic:
             print (new_list)
             self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (new_list, self.user.channel))
 
+    #Fonction pour supprimer un utilisateur d'un salon
     def remove_user(self, user_name):
         authorization = self.get_admin()
         if authorization == False and user_name:
@@ -243,9 +262,12 @@ class Graphic:
             self.db_instance.executeQuery("UPDATE channel SET users = %s WHERE name = %s", (new_list, self.user.channel))
 
     
+    #Fonction pour se déconnecter de l'application
     def logout(self):
             self.root.destroy()
             os.system('python client.py')
+
+    #Fonction pour afficher la fenêtre principale        
     def show(self):
         self.root.mainloop()
 
