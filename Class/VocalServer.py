@@ -25,20 +25,22 @@ class VocalServer:
 
     # Fonction pour gérer les clients
     def handle_client(self, client_socket):
-        if len(self.clientSockets) > 1:  # Si le nombre de clients est supérieur à 1
-            try:
-                while True:
-                    data = client_socket.recv(1024)  # Reçoit les données du client
-                    if not data:
-                        break
-                    # Envoie les données à tous les autres clients
-                    for client in self.clientSockets:
-                        if client != client_socket:
-                            client.sendall(data)
-            except Exception as e:  # En cas d'erreur
-                print(f"Erreur : {e}")  # Affiche l'erreur
-            finally:
-                client_socket.close()  # Ferme le socket client
+        try:
+            while True:
+                data = client_socket.recv(1024)  # Reçoit les données du client
+                if not data:
+                    break
+                # Envoie les données à tous les autres clients
+                for client in self.clientSockets:
+                    if client != client_socket:
+                        client.sendall(data)
+        except Exception as e:  # En cas d'erreur
+            print(f"Error occurred while handling client: {e}")  # Affiche l'erreur
+        finally:
+            # Ferme le socket client
+            print("Closing client socket.")
+            self.clientSockets.remove(client_socket)  # Supprime le socket client de l'ensemble des sockets clients
+            client_socket.close()
 
     # Fonction pour gérer les connexions clientes
     def accept_clients(self):
@@ -47,7 +49,7 @@ class VocalServer:
                 client_socket, addr = self.server_socket.accept()  # Accepte la connexion d'un client
                 self.clientSockets.add(client_socket) # Ajoute le socket client à l'ensemble des sockets clientes
                 print(f"Connection established with {addr}")  # Affiche la connexion établie avec le client
-                executor.submit(self.handle_client, client_socket)  # Soumet la fonction de gestion du client au ThreadPoolExecutor
+                executor.submit(self.handle_client, client_socket)  # Crée un nouveau thread pour gérer le client
                 
 
     def start(self):

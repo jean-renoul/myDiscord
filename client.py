@@ -157,6 +157,9 @@ def quit_voice_chat():
         audio.terminate()
     except Exception as e:
         print(f"Error occurred while quitting voice chat: {e}")
+    finally:
+        print("Voice chat closed successfully.")
+
 
 
 # Lance le thread pour écouter les messages
@@ -176,3 +179,8 @@ if new_user == True:
 
 # Affiche l'interface graphique
 app.show()
+
+# Ferme les sockets et les flux audio
+clientSocket.close()
+vocalSocket.close()
+

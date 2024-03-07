@@ -178,7 +178,7 @@ class Graphic:
             emails = [admin[0] for admin in admins]
             self.db_instance.executeQuery("INSERT INTO channel (name,users) VALUES (%s,%s)", (new_channel_name,f"{emails},"))          
             self.update_option_menu()
-        return new_channel_name
+            return new_channel_name
 
 
     #Fonction pour mettre à jour le menu des salons textuels
