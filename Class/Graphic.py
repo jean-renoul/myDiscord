@@ -80,22 +80,18 @@ class Graphic:
 
 
         self.text_rooms = self.get_channels()
-        self.voice_rooms = self.get_vocal_channel()
         self.user_name = self.get_user()
 
         self.text_rooms_menu = customtkinter.CTkOptionMenu(self.root, values=self.text_rooms, command=self.select_channel)
         self.text_rooms_menu.set("Salons textuels")
         self.text_rooms_menu.place(relx=0.025, rely=0.15)
 
-        my_option2 = customtkinter.CTkOptionMenu(self.root, values=self.voice_rooms)
-        my_option2.set("Salons vocaux")
-        my_option2.place(relx=0.025, rely=0.5)
-
+       
         self.add_user = customtkinter.CTkOptionMenu(self.root, values=self.user_name, command=self.add_user)
         self.add_user.set("Ajouter Utilisateur au salon")
         self.add_user.place(relx=0.8, rely=0.3)
 
-        self.voice_rooms_menu = my_option2
+
         self.add_user_menu = self.add_user
 
         self.new_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
@@ -104,11 +100,9 @@ class Graphic:
         self.create_channel_button = Button(self.root, text="Créer un salon", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_channel)
         self.create_channel_button.place(relx=0.025, rely=0.35)
 
-        self.new_voice_channel_entry = Entry(self.root, width=20, font=("Segoe UI", 12))
-        self.new_voice_channel_entry.place(relx=0.025, rely=0.65)
+        
 
-        self.create_voice_channel_button = Button(self.root, text="Créer un salon vocal", bg="#7289da", fg="white", font=("Segoe UI", 12), command=self.create_voice_channel)
-        self.create_voice_channel_button.place(relx=0.025, rely=0.7)
+    
 
         self.quit_voice_button = Button(self.root, text="Quitter le vocal", bg="#ff0000", fg="white", font=("Segoe UI", 8))
         self.quit_voice_button.place(relx=0.025, rely=0.45)
@@ -129,11 +123,7 @@ class Graphic:
         return text_rooms
     
 
-    def get_vocal_channel(self):
-        voice_rooms = self.db_instance.fetch("SELECT name FROM vocal_channel")
-        voice_rooms = [salon[0] for salon in voice_rooms]
-        return voice_rooms
-    
+   
     def get_user(self):
         user_name = self.db_instance.fetch("SELECT prenom FROM users")
         user_name = [name[0] for name in user_name]
@@ -209,13 +199,7 @@ class Graphic:
         self.add_user_menu.place(relx=0.8, rely=0.3)
         self.update_gui()
     
-    #Fonction pour créer un salon vocal
-    def create_voice_channel(self):
-        new_channel_name = self.new_voice_channel_entry.get()
-        if new_channel_name:
-            print(f"Salon vocal créé : {new_channel_name}")
-            self.voice_rooms_menu.add_command(label=new_channel_name, command=lambda: self.select_channel(new_channel_name))
-            self.new_voice_channel_entry.delete(0, tk.END)
+   
 
     #Fonction pour sélectionner un salon textuel
     def select_channel(self, channel_name):
