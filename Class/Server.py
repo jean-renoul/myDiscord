@@ -33,8 +33,9 @@ class Server:
                 elif "<COMMAND>create_channel" in messageContent:  # Si le message contient une commande pour créer un canal
                     newChannelName = messageContent.split("|")[1]  # Extrait le nom du nouveau canal
                     self.channels[newChannelName] = Channel(newChannelName)  # Crée un nouvel objet de canal
-                    for clientSocket in self.clientSockets:
-                        clientSocket.send(b"<COMMAND>refresh")  # Envoie une commande de rafraîchissement à chaque client
+                    for client in self.clientSockets:
+                        if client != clientSocket:
+                            client.send(b"<COMMAND>refresh")  # Envoie une commande de rafraîchissement à chaque client
                 elif "<COMMAND>refresh" in messageContent:
                     for clientSocket in self.clientSockets:
                         clientSocket.send(b"<COMMAND>refresh")  # Envoie une commande de rafraîchissement à chaque client
